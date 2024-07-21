@@ -1,0 +1,95 @@
+using TMPro;
+using UnityEditor;
+using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
+using UnityEngine.UI;
+
+public class Card : MonoBehaviour,IBeginDragHandler,IDropHandler,IDragHandler,IEndDragHandler
+{
+    public CardSO cardSO;
+    public TMP_Text cardNameText;
+    public TMP_Text cardValueText;
+    public Image cardImage;
+    public Image cardRarityColor;
+    public Image cardTypeImage;
+    public Vector2 oldPosition;
+
+    [SerializeField]public Sprite fireIcon;
+    [SerializeField]public Sprite rockIcon;
+    [SerializeField]public Sprite waterIcon;
+    [SerializeField]public Sprite darkIcon;
+    [SerializeField]public Sprite lightIcon;
+    public void OnBeginDrag(PointerEventData eventData)
+    {
+        oldPosition = transform.localPosition;
+        this.transform.localScale = new Vector2(2,2);
+    }
+
+    public void OnDrag(PointerEventData eventData)
+    {
+        
+        this.transform.position = Input.mousePosition;
+    }
+
+    public void OnDrop(PointerEventData eventData)
+    {
+        this.transform.localScale = new Vector2(1,1);
+    }
+
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    void Start()
+    {
+        cardNameText.text = cardSO.cardName;
+        cardValueText.text = cardSO.cardValue.ToString();
+        cardImage.sprite = cardSO.cardImage;
+        switch (cardSO.cardRarity)
+        {
+            case CardRarity.COMMON:
+            cardRarityColor.color = new Color(255,255,255);
+            break;
+            case CardRarity.RARE:
+            cardRarityColor.color = new Color(30,255,0);
+            break;
+            case CardRarity.VERYRARE:
+            cardRarityColor.color = new Color(0,112,221);
+            break;
+            case CardRarity.EPIC:
+            cardRarityColor.color = new Color(163,53,238); 
+            break;
+            case CardRarity.LEGENDARY:
+            cardRarityColor.color = new Color(255,128,0);
+            break;
+        }
+        switch (cardSO.cardType)
+        {
+            case CardType.FIRE:
+            cardTypeImage.sprite = fireIcon;
+            break;
+            case CardType.ROCK:
+            cardTypeImage.sprite = rockIcon;
+            break;
+            case CardType.WATER:
+            cardTypeImage.sprite = waterIcon;
+            break;
+            case CardType.DARK:
+            cardTypeImage.sprite = darkIcon;
+            break;
+            case CardType.LIGHT:
+            cardTypeImage.sprite = lightIcon;
+            break;
+        }
+    }
+    public void LoadCardData(CardSO _loadedData){
+        _loadedData = this.cardSO;
+    }
+    
+    void ResetPosition(){
+        transform.localPosition = oldPosition;
+    }
+
+    public void OnEndDrag(PointerEventData eventData)
+    {
+        ResetPosition();
+    }
+}
