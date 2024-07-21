@@ -13,9 +13,9 @@ public class CardInventory : MonoBehaviour
         {
             Instance = this;            
         }
-        CreateInventory();
+        DisplayCards();
     }
-    public void CreateInventory(){
+    public void DisplayCards(){
         for (int i = 0; i < listLenght; i++)
         {
             GameObject createdCard = Instantiate(cardPrefab,cardContainer.transform.position, Quaternion.identity);
