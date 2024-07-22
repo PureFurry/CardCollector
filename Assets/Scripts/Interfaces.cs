@@ -14,3 +14,9 @@ public class Interfaces : MonoBehaviour
         
     }
 }
+public interface IGetPower{
+    public int GetPower();
+}
+public interface IGetHealth{
+    public int GetHealth();
+}

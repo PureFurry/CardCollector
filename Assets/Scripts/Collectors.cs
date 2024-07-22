@@ -6,11 +6,12 @@ using UnityEngine;
 public class Collectors : MonoBehaviour
 {
     public bool isTurn;
-    protected List<CardSO> collectorDeck;
-    protected GameObject cardObject;
+    [SerializeField]protected List<CardSO> collectorDeck;
+    [SerializeField]protected GameObject cardObject;
     [SerializeField]protected int listLenght;
     private void Awake() {
-        cardObject = (GameObject)AssetDatabase.LoadAssetAtPath("Assets/Prefabs/Card.prefab",typeof(CardSO)) as GameObject;
+        cardObject = AssetDatabase.LoadAssetAtPath("Assets/Prefabs/Card.prefab",typeof(GameObject)) as GameObject;
+
     }
     protected void ShuffleDeck(List<CardSO> _deck){
         // Fisher-Yates karıştırma algoritması kullanarak kartları karıştırın
@@ -24,6 +25,7 @@ public class Collectors : MonoBehaviour
         }
     }
     public void DisplayCards(GameObject cardPrefab,Transform cardContainer){
+        
         for (int i = 0; i < listLenght; i++)
         {
             GameObject createdCard = Instantiate(cardPrefab,cardContainer.transform.position, Quaternion.identity);
