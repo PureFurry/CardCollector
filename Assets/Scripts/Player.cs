@@ -13,12 +13,12 @@ public class Player : Collectors
     private void Update() {
         if (isTurn == true)
         {
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
-        }
-        else{
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
+        }
+        else{
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
         }
     }
 }

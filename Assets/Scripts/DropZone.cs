@@ -28,6 +28,8 @@ public class DropZone : MonoBehaviour,IDropHandler,IGetPower,IGetHealth
     public virtual void OnDrop(PointerEventData eventData)
     {
         eventData.pointerDrag.GetComponent<Card>().oldPosition = this.transform.localPosition;
+        eventData.pointerDrag.gameObject.transform.localScale = new Vector2(1,1);
+
         eventData.pointerDrag.GetComponent<Card>().transform.parent = this.transform;
     }
 

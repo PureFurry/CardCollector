@@ -801,7 +801,7 @@ GameObject:
   - component: {fileID: 785391601}
   - component: {fileID: 785391600}
   m_Layer: 5
-  m_Name: Button
+  m_Name: EndTurnButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -870,7 +870,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 785391601}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 870687526}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: GiveTurn
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 1
 --- !u!114 &785391601
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -972,6 +984,7 @@ GameObject:
   - component: {fileID: 1317840620}
   - component: {fileID: 1317840619}
   - component: {fileID: 1317840621}
+  - component: {fileID: 1317840622}
   m_Layer: 5
   m_Name: Enemy Hand
   m_TagString: Untagged
@@ -1062,6 +1075,25 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &1317840622
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1317840617}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3854f772947bb814a9f401e0da124e42, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isTurn: 0
+  collectorDeck:
+  - {fileID: 11400000, guid: 1ac8fba7818b1d840857ff6a8af7a459, type: 2}
+  - {fileID: 11400000, guid: ee8a33384595d434ea135226a37c7c66, type: 2}
+  - {fileID: 11400000, guid: d980e5d45b516d14bbec64fe31cefbeb, type: 2}
+  cardObject: {fileID: 2612735546782104732, guid: 03feb9601749ab04398847028aa3d722, type: 3}
+  listLenght: 3
 --- !u!1 &1341855337
 GameObject:
   m_ObjectHideFlags: 0
@@ -1606,8 +1638,8 @@ MonoBehaviour:
   collectorDeck:
   - {fileID: 11400000, guid: d980e5d45b516d14bbec64fe31cefbeb, type: 2}
   - {fileID: 11400000, guid: 1ac8fba7818b1d840857ff6a8af7a459, type: 2}
-  - {fileID: 11400000, guid: d980e5d45b516d14bbec64fe31cefbeb, type: 2}
-  - {fileID: 11400000, guid: 1ac8fba7818b1d840857ff6a8af7a459, type: 2}
+  - {fileID: 11400000, guid: 6ad18880c756c0b4fb161a56c903b862, type: 2}
+  - {fileID: 11400000, guid: 8986c08cb663e904da03795d823adf9c, type: 2}
   cardObject: {fileID: 0}
   listLenght: 5
 --- !u!114 &1770387262

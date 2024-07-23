@@ -25,6 +25,7 @@ public enum CardType
     FIRE,
     ROCK,
     WATER,
+    ELECTRIC,
     DARK,
     LIGHT
 }

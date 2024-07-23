@@ -18,6 +18,7 @@ public class Card : MonoBehaviour,IBeginDragHandler,IDropHandler,IDragHandler,IE
     [SerializeField]public Sprite fireIcon;
     [SerializeField]public Sprite rockIcon;
     [SerializeField]public Sprite waterIcon;
+    [SerializeField]public Sprite electricIcon;
     [SerializeField]public Sprite darkIcon;
     [SerializeField]public Sprite lightIcon;
     public void OnBeginDrag(PointerEventData eventData)
@@ -72,6 +73,9 @@ public class Card : MonoBehaviour,IBeginDragHandler,IDropHandler,IDragHandler,IE
             case CardType.WATER:
             cardTypeImage.sprite = waterIcon;
             break;
+            case CardType.ELECTRIC:
+            cardTypeImage.sprite = electricIcon;
+            break;
             case CardType.DARK:
             cardTypeImage.sprite = darkIcon;
             break;
@@ -86,6 +90,7 @@ public class Card : MonoBehaviour,IBeginDragHandler,IDropHandler,IDragHandler,IE
     
     void ResetPosition(){
         transform.localPosition = oldPosition;
+        this.transform.localScale = new Vector2(1,1);
     }
 
     public void OnEndDrag(PointerEventData eventData)

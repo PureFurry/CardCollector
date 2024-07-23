@@ -14,18 +14,30 @@ public class ArenaUIManager : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void OnEnable() {
         SuscribeUpdatePlayerText();
+        SuscribeUpdateEnemyText();
     }
     private void OnDisable() {
         UnSuscribeUpdatePlayerText();
+        UnSuscribeUpdateEnemyText();
     }
     void SuscribeUpdatePlayerText(){
         GameManager.OnPlayerPowerUpdate += PlayerTextUpdate;
     }
-    
     void UnSuscribeUpdatePlayerText(){
         GameManager.OnPlayerPowerUpdate -= PlayerTextUpdate;
     }
-
+    void SuscribeUpdateEnemyText(){
+        GameManager.OnEnemyStatsUpdate += EnemyTextUpdate;
+    }
+    void UnSuscribeUpdateEnemyText(){
+        GameManager.OnEnemyStatsUpdate -= EnemyTextUpdate;
+    }
+    
+    private void EnemyTextUpdate(int powerAmount, int healthAmount)
+    {
+        enemyPowerText.text = powerAmount.ToString();
+        enemyHealthText.text = healthAmount.ToString();
+    }
 
     private void PlayerTextUpdate(int powerAmount,int healthAmount)
     {
