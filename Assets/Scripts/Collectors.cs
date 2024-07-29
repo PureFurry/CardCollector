@@ -9,6 +9,7 @@ public class Collectors : MonoBehaviour
     [SerializeField]protected List<CardSO> collectorDeck;
     [SerializeField]protected GameObject cardObject;
     [SerializeField]protected int listLenght;
+    public bool isAttacking;
     private void Awake() {
         cardObject = AssetDatabase.LoadAssetAtPath("Assets/Prefabs/Card.prefab",typeof(GameObject)) as GameObject;
 

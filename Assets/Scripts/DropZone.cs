@@ -9,7 +9,11 @@ public class DropZone : MonoBehaviour,IDropHandler,IGetPower,IGetHealth
         Card[] temp = transform.GetComponentsInChildren<Card>();
         for (int i = 0; i < temp.Length; i++)
         {
-            tempHealth += temp[i].cardSO.cardHealth;
+            if (temp[i].isCardOnBack == false)
+            {
+                Debug.Log(temp[i].isCardOnBack);
+                tempHealth += temp[i].cardSO.cardHealth;
+            }
         }
         return tempHealth;
     }
@@ -20,7 +24,10 @@ public class DropZone : MonoBehaviour,IDropHandler,IGetPower,IGetHealth
         Card[] temp = transform.GetComponentsInChildren<Card>();
         for (int i = 0; i < temp.Length; i++)
         {
-            tempPower += temp[i].cardSO.cardDamage;
+            if (temp[i].isCardOnBack == false)
+            {
+                tempPower += temp[i].cardSO.cardDamage;
+            }
         }
         return tempPower;
     }

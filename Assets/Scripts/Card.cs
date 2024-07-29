@@ -14,7 +14,8 @@ public class Card : MonoBehaviour,IBeginDragHandler,IDropHandler,IDragHandler,IE
     public Image cardRarityColor;
     public Image cardTypeImage;
     public Vector2 oldPosition;
-
+    [SerializeField]public Image cardBack;
+    public bool isCardOnBack;
     [SerializeField]public Sprite fireIcon;
     [SerializeField]public Sprite rockIcon;
     [SerializeField]public Sprite waterIcon;
@@ -38,7 +39,6 @@ public class Card : MonoBehaviour,IBeginDragHandler,IDropHandler,IDragHandler,IE
         this.transform.localScale = new Vector2(1,1);
     }
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         cardNameText.text = cardSO.cardName;
@@ -83,6 +83,16 @@ public class Card : MonoBehaviour,IBeginDragHandler,IDropHandler,IDragHandler,IE
             cardTypeImage.sprite = lightIcon;
             break;
         }
+    }
+    public void CardFlip(bool _cardBack){
+        if (_cardBack == true) {
+            cardBack.enabled = true;
+            isCardOnBack = _cardBack;
+        } 
+        else {
+            cardBack.enabled = false;
+            isCardOnBack = _cardBack;
+        } 
     }
     public void LoadCardData(CardSO _loadedData){
         _loadedData = this.cardSO;

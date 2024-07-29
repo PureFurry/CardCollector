@@ -42,9 +42,23 @@ public class Enemy : Collectors,IGetHealth,IGetPower
         }
     }
     void PlayCard(Card playedCard){
-        playedCard.transform.parent = enemyFieldDropZone.transform;
-        GameManager.Instance.UpgradeEnemyStats(GetPower(),GetHealth());
-        GameManager.Instance.GiveTurn();
+        int ranodmNumber = Random.Range(0, 100);
+        Debug.Log(ranodmNumber);
+        if (ranodmNumber < 50)
+        {
+            playedCard.CardFlip(false);
+            playedCard.transform.parent = enemyFieldDropZone.transform;
+            GameManager.Instance.UpgradeEnemyStats(GetPower(),GetHealth());
+            GameManager.Instance.GiveTurn();
+        }
+        else
+        {
+            playedCard.CardFlip(true);
+            playedCard.transform.parent = enemyFieldDropZone.transform;
+            // GameManager.Instance.UpgradeEnemyStats(GetPower(),GetHealth());
+            GameManager.Instance.GiveTurn();
+        }
+        
     }
     public int GetHealth()
     {
@@ -52,9 +66,11 @@ public class Enemy : Collectors,IGetHealth,IGetPower
         Card[] temp = enemyFieldDropZone.GetComponentsInChildren<Card>();
         for (int i = 0; i < temp.Length; i++)
         {
-            tempHealth += temp[i].cardSO.cardHealth;
+            if (temp[i].isCardOnBack == false)
+            {
+                tempHealth += temp[i].cardSO.cardHealth;
+            }
         }
-        Debug.Log(tempHealth);
         return tempHealth;
     }
 
@@ -64,9 +80,11 @@ public class Enemy : Collectors,IGetHealth,IGetPower
         Card[] temp = enemyFieldDropZone.GetComponentsInChildren<Card>();
         for (int i = 0; i < temp.Length; i++)
         {
-            tempPower += temp[i].cardSO.cardDamage;
+            if (temp[i].isCardOnBack == false)
+            {
+                tempPower += temp[i].cardSO.cardDamage;
+            }
         }
-        Debug.Log(tempPower);
         return tempPower;
     }
 }
