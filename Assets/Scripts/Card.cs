@@ -10,6 +10,7 @@ public class Card : MonoBehaviour,IBeginDragHandler,IDropHandler,IDragHandler,IE
     public CardSO cardSO;
     public TMP_Text cardNameText;
     public TMP_Text cardValueText;
+    public TMP_Text cardDamageText;
     public Image cardImage;
     public Image cardRarityColor;
     public Image cardTypeImage;
@@ -44,6 +45,7 @@ public class Card : MonoBehaviour,IBeginDragHandler,IDropHandler,IDragHandler,IE
         cardNameText.text = cardSO.cardName;
         cardValueText.text = cardSO.cardValue.ToString();
         cardImage.sprite = cardSO.cardImage;
+        cardDamageText.text = cardSO.cardDamage.ToString();
         switch (cardSO.cardRarity)
         {
             case CardRarity.COMMON:

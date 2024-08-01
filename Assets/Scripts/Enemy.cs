@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Enemy : Collectors,IGetHealth,IGetPower
+public class Enemy : Collectors,IGetPower
 {
     GameObject enemyFieldDropZone;
     List<Card> enemyDeck = new List<Card>();
@@ -48,7 +48,7 @@ public class Enemy : Collectors,IGetHealth,IGetPower
         {
             playedCard.CardFlip(false);
             playedCard.transform.parent = enemyFieldDropZone.transform;
-            GameManager.Instance.UpgradeEnemyStats(GetPower(),GetHealth());
+            GameManager.Instance.UpgradeEnemyStats(GetPower());
             GameManager.Instance.GiveTurn();
         }
         else
@@ -60,19 +60,19 @@ public class Enemy : Collectors,IGetHealth,IGetPower
         }
         
     }
-    public int GetHealth()
-    {
-        int tempHealth = 0;
-        Card[] temp = enemyFieldDropZone.GetComponentsInChildren<Card>();
-        for (int i = 0; i < temp.Length; i++)
-        {
-            if (temp[i].isCardOnBack == false)
-            {
-                tempHealth += temp[i].cardSO.cardHealth;
-            }
-        }
-        return tempHealth;
-    }
+    // public int GetHealth()
+    // {
+    //     int tempHealth = 0;
+    //     Card[] temp = enemyFieldDropZone.GetComponentsInChildren<Card>();
+    //     for (int i = 0; i < temp.Length; i++)
+    //     {
+    //         if (temp[i].isCardOnBack == false)
+    //         {
+    //             tempHealth += temp[i].cardSO.cardHealth;
+    //         }
+    //     }
+    //     return tempHealth;
+    // }
 
     public int GetPower()
     {

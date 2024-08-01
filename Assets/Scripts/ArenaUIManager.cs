@@ -19,12 +19,16 @@ public class ArenaUIManager : MonoBehaviour
         SuscribeUpdateEnemyText();
         SuscribeUpdatePlayerComboText();
         SuscribeUpdateEnemyComboText();
+        SuscribeUpdateEnemyHealthText();
+        SuscribeUpdatePlayerHealthText();
     }
     private void OnDisable() {
         UnSuscribeUpdatePlayerText();
         UnSuscribeUpdateEnemyText();
         UnSuscribeUpdatePlayerComboText();
-        UnSuscribeUpdateEnemyComboText();    
+        UnSuscribeUpdateEnemyComboText();
+        UnSuscribeUpdateEnemyHealthText();
+        UnSuscribeUpdatePlayerHealthText();    
     }
     void SuscribeUpdatePlayerText(){
         GameManager.OnPlayerPowerUpdate += PlayerTextUpdate;
@@ -50,22 +54,37 @@ public class ArenaUIManager : MonoBehaviour
     void UnSuscribeUpdateEnemyComboText(){
         GameManager.EnemyComboUpdate -= EnemyComboTextUpdate;
     }    
-    
+    void SuscribeUpdatePlayerHealthText(){
+        GameManager.OnPlayerHealthUpdate += PlayerHealthTextUpdate;
+    }
+    void UnSuscribeUpdatePlayerHealthText(){
+        GameManager.OnPlayerHealthUpdate -= PlayerHealthTextUpdate;
+    }
+    void SuscribeUpdateEnemyHealthText(){
+        GameManager.OnEnemyHealthUpdate += EnemyHealthTextUpdate;
+    }
+    void UnSuscribeUpdateEnemyHealthText(){
+        GameManager.OnEnemyHealthUpdate -= EnemyHealthTextUpdate;
+    }
     private void PlayerComboTextUpdate(int comboAmount){
         playerComboText.text = "X" + comboAmount.ToString();
     }
     private void EnemyComboTextUpdate(int comboAmount){
         enemyComboText.text = "X" + comboAmount.ToString();
     }
-    private void EnemyTextUpdate(int powerAmount, int healthAmount)
+    private void EnemyTextUpdate(int powerAmount)
     {
         enemyPowerText.text = powerAmount.ToString();
-        enemyHealthText.text = healthAmount.ToString();
     }
 
-    private void PlayerTextUpdate(int powerAmount,int healthAmount)
+    private void PlayerTextUpdate(int powerAmount)
     {
         playerPowerText.text = powerAmount.ToString();
+    }
+    private void PlayerHealthTextUpdate(int healthAmount){
         playerHealthText.text = healthAmount.ToString();
+    }
+    private void EnemyHealthTextUpdate(int healthAmount){
+        enemyHealthText.text = healthAmount.ToString();
     }
 }

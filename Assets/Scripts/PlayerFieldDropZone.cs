@@ -18,10 +18,10 @@ public class PlayerFieldDropZone : DropZone
         //Fonksiyonlar butonlara atanmıyor
         Debug.Log(gettingCard.cardSO.cardName);
         hideButton.onClick.AddListener(new UnityEngine.Events.UnityAction(() => gettingCard.CardFlip(true)));
-        hideButton.onClick.AddListener(new UnityEngine.Events.UnityAction(() => GameManager.Instance.UpgradePlayerPower(GetPower(),GetHealth())));
+        hideButton.onClick.AddListener(new UnityEngine.Events.UnityAction(() => GameManager.Instance.UpgradePlayerPower(GetPower())));
         hideButton.onClick.AddListener(new UnityEngine.Events.UnityAction(() => Destroy(GameObject.FindGameObjectWithTag("AskPanel"))));
         openButton.onClick.AddListener(new UnityEngine.Events.UnityAction(() => gettingCard.CardFlip(false)));
-        openButton.onClick.AddListener(new UnityEngine.Events.UnityAction(() =>GameManager.Instance.UpgradePlayerPower(GetPower(),GetHealth())));
+        openButton.onClick.AddListener(new UnityEngine.Events.UnityAction(() =>GameManager.Instance.UpgradePlayerPower(GetPower())));
         openButton.onClick.AddListener(new UnityEngine.Events.UnityAction(() => Destroy(GameObject.FindGameObjectWithTag("AskPanel"))));
         // GameManager.Instance.UpgradePlayerPower(GetPower(),GetHealth());
     }

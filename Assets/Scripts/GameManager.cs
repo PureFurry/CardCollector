@@ -7,8 +7,10 @@ using UnityEngine.UI;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set;}
-    public static event Action<int,int> OnPlayerPowerUpdate;
-    public static event Action<int,int> OnEnemyStatsUpdate;
+    public static event Action<int> OnPlayerPowerUpdate;
+    public static event Action<int> OnEnemyStatsUpdate;
+    public static event Action<int> OnPlayerHealthUpdate;
+    public static event Action<int> OnEnemyHealthUpdate;
     public static event Action<int> PlayerComboUpdate;
     public static event Action<int> EnemyComboUpdate;
     public int playerPower,enemyPower,playerHealth,enemyHealth, currentPlayerHealth;
@@ -29,13 +31,17 @@ public class GameManager : MonoBehaviour
         gameStates = GameStates.START;
         player = GameObject.Find("Player Hand").GetComponent<Player>();
         enemy = GameObject.Find("Enemy Hand").GetComponent<Enemy>();
-        ResetState();
+        combo = new Dictionary<int, int>();
     }
     private void Update() {
         switch (gameStates)
         {
             case GameStates.START:
             isItFirstTurn = true;
+            playerHealth = 20;
+            enemyHealth = 20;
+            OnPlayerHealthUpdate?.Invoke(playerHealth);
+            OnEnemyHealthUpdate?.Invoke(enemyHealth);
             combo.Add(1,1);
             combo.Add(2,1);
             combo.Add(3,2);
@@ -65,21 +71,17 @@ public class GameManager : MonoBehaviour
             case GameStates.END:
             int tempPlayerPower = playerPower;
             int tempEnemyPower = enemyPower;
-            playerHealth -= tempEnemyPower;
-            enemyHealth -=  tempPlayerPower;
             gameStates = GameStates.RESET;
             break;
         }
     }
-    public void UpgradePlayerPower(int _playerPower,int _playerHealth){
-        OnPlayerPowerUpdate?.Invoke(_playerPower,_playerHealth);
+    public void UpgradePlayerPower(int _playerPower){
+        OnPlayerPowerUpdate?.Invoke(_playerPower);
         playerPower = _playerPower;
-        playerHealth = _playerHealth;
     }
-    public void UpgradeEnemyStats(int _enemyPower,int _enemyHealth){
-        OnEnemyStatsUpdate?.Invoke(_enemyPower, _enemyHealth);
+    public void UpgradeEnemyStats(int _enemyPower){
+        OnEnemyStatsUpdate?.Invoke(_enemyPower);
         enemyPower = _enemyPower;
-        enemyHealth = _enemyHealth;
     }
     public void ResetState(){
         gameStates = GameStates.RESET;
@@ -138,12 +140,6 @@ public class GameManager : MonoBehaviour
                     gameStates = GameStates.PLAYERTURN;
                 }
             }
-        }
-    }
-    void PlayerComboCharger(){
-        if (playerComboCounter == 1 )
-        {
-            
         }
     }
 }

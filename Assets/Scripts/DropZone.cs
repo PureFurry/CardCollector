@@ -1,22 +1,22 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class DropZone : MonoBehaviour,IDropHandler,IGetPower,IGetHealth
+public class DropZone : MonoBehaviour,IDropHandler,IGetPower
 {
-    public int GetHealth()
-    {
-        int tempHealth = 0;
-        Card[] temp = transform.GetComponentsInChildren<Card>();
-        for (int i = 0; i < temp.Length; i++)
-        {
-            if (temp[i].isCardOnBack == false)
-            {
-                Debug.Log(temp[i].isCardOnBack);
-                tempHealth += temp[i].cardSO.cardHealth;
-            }
-        }
-        return tempHealth;
-    }
+    // public int GetHealth()
+    // {
+    //     int tempHealth = 0;
+    //     Card[] temp = transform.GetComponentsInChildren<Card>();
+    //     for (int i = 0; i < temp.Length; i++)
+    //     {
+    //         if (temp[i].isCardOnBack == false)
+    //         {
+    //             Debug.Log(temp[i].isCardOnBack);
+    //             tempHealth += temp[i].cardSO.cardHealth;
+    //         }
+    //     }
+    //     return tempHealth;
+    // }
 
     public int GetPower()
     {

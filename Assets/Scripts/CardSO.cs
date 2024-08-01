@@ -8,7 +8,6 @@ public class CardSO : ScriptableObject
     public Sprite cardImage;
     public int cardValue;
     public int cardDamage;
-    public int cardHealth;
     public CardRarity cardRarity;
     public CardType cardType;
 }
