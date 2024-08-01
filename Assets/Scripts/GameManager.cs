@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,8 +9,13 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance { get; private set;}
     public static event Action<int,int> OnPlayerPowerUpdate;
     public static event Action<int,int> OnEnemyStatsUpdate;
-    public int playerPower,enemyPower,playerHealth,enemyHealth;
-    public bool isPlayerAttacking, isEnemyAttacking;
+    public static event Action<int> PlayerComboUpdate;
+    public static event Action<int> EnemyComboUpdate;
+    public int playerPower,enemyPower,playerHealth,enemyHealth, currentPlayerHealth;
+    public bool isPlayerAttacking, isEnemyAttacking, isItFirstTurn;
+    public Dictionary<int, int> combo;
+    public int playerCombo,enemyCombo;
+    public int playerAttackCount, enemyAttackCount, playerComboCounter, enemyComboCounter;
     public Enemy enemy;
     public Player player;
     public GameStates gameStates;
@@ -28,6 +34,21 @@ public class GameManager : MonoBehaviour
     private void Update() {
         switch (gameStates)
         {
+            case GameStates.START:
+            isItFirstTurn = true;
+            combo.Add(1,1);
+            combo.Add(2,1);
+            combo.Add(3,2);
+            combo.Add(4,2);
+            combo.Add(5,2);
+            combo.Add(6,3);
+            playerComboCounter = 1;
+            enemyComboCounter = 1;
+            playerCombo = 1;
+            enemyCombo = 1;
+            PlayerComboUpdate?.Invoke(playerCombo);
+            gameStates = GameStates.PLAYERTURN;
+            break;
             case GameStates.RESET:
             playerPower = 0;
             enemyPower = 0;
@@ -48,11 +69,9 @@ public class GameManager : MonoBehaviour
             enemyHealth -=  tempPlayerPower;
             gameStates = GameStates.RESET;
             break;
-
         }
     }
     public void UpgradePlayerPower(int _playerPower,int _playerHealth){
-        
         OnPlayerPowerUpdate?.Invoke(_playerPower,_playerHealth);
         playerPower = _playerPower;
         playerHealth = _playerHealth;
@@ -71,20 +90,29 @@ public class GameManager : MonoBehaviour
             if (player.isTurn == true)
             {
                 isPlayerAttacking = GameObject.Find("Player Attack").GetComponent<Toggle>().isOn;
-                if (isPlayerAttacking)
+                if (isPlayerAttacking && playerAttackCount > 0)
                 {
-                    
+                    Card[] playerCardonField = GameObject.Find("Player Field").GetComponentsInChildren<Card>();
+                    Card[] enemyCardsonField = GameObject.Find("Enemy Field").GetComponentsInChildren<Card>();
+                    if (isItFirstTurn)
+                    {
+                        isItFirstTurn = false;
+                    }
                     if (playerPower > enemyPower)
                     {
-                        int multiplier = Mathf.RoundToInt(playerPower / 3);
-                        if (UnityEngine.Random.Range(0,12) > 6)
+                        for (int i = 0; i < enemyCardsonField.Length; i++)
                         {
-                            enemyHealth -= UnityEngine.Random.Range(0,6) * multiplier;
-                            Card[] destroyPool = GameObject.Find("Enemy Field").GetComponentsInChildren<Card>();
-                            int randomDestroy = UnityEngine.Random.Range(0,destroyPool.Length - 1);
-                            Destroy(destroyPool[randomDestroy].gameObject);
-                            gameStates = GameStates.ENEMYTURN;
-                        } 
+                            for (int j = 0; j < playerCardonField.Length; j++)
+                            {
+                                if (playerCardonField[i].cardSO.cardValue == enemyCardsonField[i].cardSO.cardValue && playerCardonField[i].cardSO.cardDamage > enemyCardsonField[i].cardSO.cardDamage)
+                                {
+                                    playerComboCounter++;
+                                    playerCombo = combo[playerComboCounter];
+                                    PlayerComboUpdate?.Invoke(playerCombo);
+                                    Destroy(enemyCardsonField[i].gameObject); 
+                                }
+                            }
+                        }
                     }
                     else
                     {
@@ -110,6 +138,12 @@ public class GameManager : MonoBehaviour
                     gameStates = GameStates.PLAYERTURN;
                 }
             }
+        }
+    }
+    void PlayerComboCharger(){
+        if (playerComboCounter == 1 )
+        {
+            
         }
     }
 }
