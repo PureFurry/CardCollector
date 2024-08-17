@@ -9,6 +9,8 @@ TagManager:
   - OpenAnswer
   - PlayerFieldZone
   - AskPanel
+  - EnemyField
+  - PlayerField
   layers:
   - Default
   - TransparentFX

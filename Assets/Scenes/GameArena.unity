@@ -569,7 +569,7 @@ GameObject:
   - component: {fileID: 259507373}
   m_Layer: 5
   m_Name: Enemy Field
-  m_TagString: Untagged
+  m_TagString: EnemyField
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1234,6 +1234,8 @@ MonoBehaviour:
   isPlayerAttacking: 0
   isEnemyAttacking: 0
   isItFirstTurn: 0
+  playerAttackable: 1
+  enemyAttackable: 1
   playerCombo: 0
   enemyCombo: 0
   playerAttackCount: 0
@@ -1309,7 +1311,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.7294118, g: 0.15686275, b: 0.15686275, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1627,8 +1629,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 20, y: 20}
+  m_AnchoredPosition: {x: -0.0133, y: 0.2452}
+  m_SizeDelta: {x: 43.5344, y: 36.7809}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1369921048
 MonoBehaviour:
@@ -1650,7 +1652,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10901, guid: 0000000000000000f000000000000000, type: 0}
+  m_Sprite: {fileID: 3009030062900057397, guid: 585b0a0dd36e7094db3cb6ef9c60ab46, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1684,7 +1686,7 @@ GameObject:
   - component: {fileID: 1403039184}
   m_Layer: 5
   m_Name: Player Field
-  m_TagString: Untagged
+  m_TagString: PlayerField
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2029,7 +2031,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.7283019, g: 0.15802766, b: 0.15802766, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -2258,8 +2260,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 20, y: 20}
+  m_AnchoredPosition: {x: 0.0000047684, y: 0.000017643}
+  m_SizeDelta: {x: 43.506, y: 37.352}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1716105607
 MonoBehaviour:
@@ -2281,7 +2283,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10901, guid: 0000000000000000f000000000000000, type: 0}
+  m_Sprite: {fileID: 3009030062900057397, guid: 585b0a0dd36e7094db3cb6ef9c60ab46, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

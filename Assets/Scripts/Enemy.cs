@@ -43,22 +43,23 @@ public class Enemy : Collectors,IGetPower
     }
     void PlayCard(Card playedCard){
         int ranodmNumber = Random.Range(0, 100);
-        Debug.Log(ranodmNumber);
-        if (ranodmNumber < 50)
+        if (playedCard != null)
         {
-            playedCard.CardFlip(false);
-            playedCard.transform.parent = enemyFieldDropZone.transform;
-            GameManager.Instance.UpgradeEnemyStats(GetPower());
-            GameManager.Instance.GiveTurn();
+            if (ranodmNumber < 50)
+            {
+                playedCard.CardFlip(false);
+                playedCard.transform.parent = enemyFieldDropZone.transform;
+                GameManager.Instance.UpgradeEnemyStats(GetPower());
+                GameManager.Instance.GiveTurn();
+            }
+            else
+            {
+                playedCard.CardFlip(true);
+                playedCard.transform.parent = enemyFieldDropZone.transform;
+                // GameManager.Instance.UpgradeEnemyStats(GetPower(),GetHealth());
+                GameManager.Instance.GiveTurn();
+            }
         }
-        else
-        {
-            playedCard.CardFlip(true);
-            playedCard.transform.parent = enemyFieldDropZone.transform;
-            // GameManager.Instance.UpgradeEnemyStats(GetPower(),GetHealth());
-            GameManager.Instance.GiveTurn();
-        }
-        
     }
     // public int GetHealth()
     // {

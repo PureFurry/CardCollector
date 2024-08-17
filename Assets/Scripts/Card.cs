@@ -16,7 +16,7 @@ public class Card : MonoBehaviour,IBeginDragHandler,IDropHandler,IDragHandler,IE
     public Image cardTypeImage;
     public Vector2 oldPosition;
     [SerializeField]public Image cardBack;
-    public bool isCardOnBack;
+    public bool isCardOnBack, IsAttacked;
     [SerializeField]public Sprite fireIcon;
     [SerializeField]public Sprite rockIcon;
     [SerializeField]public Sprite waterIcon;
@@ -42,6 +42,7 @@ public class Card : MonoBehaviour,IBeginDragHandler,IDropHandler,IDragHandler,IE
 
     void Start()
     {
+        IsAttacked = false;
         cardNameText.text = cardSO.cardName;
         cardValueText.text = cardSO.cardValue.ToString();
         cardImage.sprite = cardSO.cardImage;
@@ -96,7 +97,7 @@ public class Card : MonoBehaviour,IBeginDragHandler,IDropHandler,IDragHandler,IE
             isCardOnBack = _cardBack;
         } 
     }
-    public void LoadCardData(CardSO _loadedData){
+    public void LoadCardData(ref CardSO _loadedData){
         _loadedData = this.cardSO;
     }
     

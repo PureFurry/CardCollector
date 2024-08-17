@@ -290,6 +290,7 @@ MonoBehaviour:
   oldPosition: {x: 0, y: 0}
   cardBack: {fileID: 8988949485997133737}
   isCardOnBack: 0
+  IsAttacked: 0
   fireIcon: {fileID: -825923104395225522, guid: e2067877b72a6db469faed5ce99de6a9, type: 3}
   rockIcon: {fileID: -6687318759922180757, guid: e2067877b72a6db469faed5ce99de6a9, type: 3}
   waterIcon: {fileID: 5732893518064687574, guid: e2067877b72a6db469faed5ce99de6a9, type: 3}

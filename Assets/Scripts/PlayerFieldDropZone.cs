@@ -16,7 +16,6 @@ public class PlayerFieldDropZone : DropZone
         Button hideButton = GameObject.FindGameObjectWithTag("HideAnswer").GetComponent<Button>();
         Button openButton = GameObject.FindGameObjectWithTag("OpenAnswer").GetComponent<Button>();
         //Fonksiyonlar butonlara atanmıyor
-        Debug.Log(gettingCard.cardSO.cardName);
         hideButton.onClick.AddListener(new UnityEngine.Events.UnityAction(() => gettingCard.CardFlip(true)));
         hideButton.onClick.AddListener(new UnityEngine.Events.UnityAction(() => GameManager.Instance.UpgradePlayerPower(GetPower())));
         hideButton.onClick.AddListener(new UnityEngine.Events.UnityAction(() => Destroy(GameObject.FindGameObjectWithTag("AskPanel"))));
