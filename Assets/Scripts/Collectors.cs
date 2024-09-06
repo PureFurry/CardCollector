@@ -32,7 +32,7 @@ public class Collectors : MonoBehaviour
             GameObject createdCard = Instantiate(cardPrefab,cardContainer.transform.position, Quaternion.identity);
             createdCard.TryGetComponent<Card>(out Card card);
             card.cardSO = collectorDeck[i];
-            createdCard.transform.parent = cardContainer.transform;
+            createdCard.transform.SetParent(cardContainer.transform);
         }
     }
 }

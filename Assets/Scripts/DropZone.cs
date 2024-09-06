@@ -37,18 +37,6 @@ public class DropZone : MonoBehaviour,IDropHandler,IGetPower
         eventData.pointerDrag.GetComponent<Card>().oldPosition = this.transform.localPosition;
         eventData.pointerDrag.gameObject.transform.localScale = new Vector2(1,1);
 
-        eventData.pointerDrag.GetComponent<Card>().transform.parent = this.transform;
-    }
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        eventData.pointerDrag.GetComponent<Card>().transform.SetParent(this.transform);
     }
 }

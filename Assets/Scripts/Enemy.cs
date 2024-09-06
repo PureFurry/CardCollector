@@ -48,8 +48,8 @@ public class Enemy : Collectors,IGetPower
             if (ranodmNumber < 50)
             {
                 playedCard.CardFlip(false);
-                playedCard.transform.parent = enemyFieldDropZone.transform;
-                GameManager.Instance.UpgradeEnemyStats(GetPower());
+                playedCard.transform.SetParent(enemyFieldDropZone.transform);
+                // GameManager.Instance.UpgradeEnemyStats(GetPower());
                 GameManager.Instance.GiveTurn();
             }
             else

@@ -23,6 +23,7 @@ public class Card : MonoBehaviour,IBeginDragHandler,IDropHandler,IDragHandler,IE
     [SerializeField]public Sprite electricIcon;
     [SerializeField]public Sprite darkIcon;
     [SerializeField]public Sprite lightIcon;
+    public int currentAttack;
     public void OnBeginDrag(PointerEventData eventData)
     {
         oldPosition = transform.localPosition;
@@ -39,14 +40,26 @@ public class Card : MonoBehaviour,IBeginDragHandler,IDropHandler,IDragHandler,IE
     {
         this.transform.localScale = new Vector2(1,1);
     }
+    public void AttackModifier(int modifierAmount){
+        if (modifierAmount < 0)
+        {
+            currentAttack -= modifierAmount;
+            cardDamageText.text = currentAttack.ToString();
+        }
+        else{
+            currentAttack += modifierAmount;
+            cardDamageText.text = currentAttack.ToString();
+        }
+    }
 
     void Start()
     {
         IsAttacked = false;
+        currentAttack = cardSO.cardDamage;
         cardNameText.text = cardSO.cardName;
         cardValueText.text = cardSO.cardValue.ToString();
         cardImage.sprite = cardSO.cardImage;
-        cardDamageText.text = cardSO.cardDamage.ToString();
+        cardDamageText.text = currentAttack.ToString();
         switch (cardSO.cardRarity)
         {
             case CardRarity.COMMON:

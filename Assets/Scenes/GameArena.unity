@@ -590,8 +590,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 90, y: 123.890015}
-  m_SizeDelta: {x: -397.8, y: -829.1051}
+  m_AnchoredPosition: {x: -37.309, y: 136}
+  m_SizeDelta: {x: -1695, y: -829.1051}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &259507371
 MonoBehaviour:
@@ -786,8 +786,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerField: {fileID: 1403039178}
   enemyField: {fileID: 259507369}
-  playerPowerText: {fileID: 611754688}
-  enemyPowerText: {fileID: 2046387556}
   playerHealthText: {fileID: 1341855340}
   enemyHealthText: {fileID: 114703309}
   playerComboText: {fileID: 718357391}
@@ -809,7 +807,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &611754686
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1149,7 +1147,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 870687526}
         m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
-        m_MethodName: GiveTurn
+        m_MethodName: GiveTurnAction
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1158,7 +1156,7 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
-        m_CallState: 1
+        m_CallState: 2
 --- !u!114 &785391601
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1207,6 +1205,7 @@ GameObject:
   m_Component:
   - component: {fileID: 870687527}
   - component: {fileID: 870687526}
+  - component: {fileID: 870687528}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -1260,6 +1259,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &870687528
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 870687525}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9bf04cbef8928574eb77d7ad0fc63ef7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1282536864
 GameObject:
   m_ObjectHideFlags: 0
@@ -1707,8 +1718,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 90, y: -127}
-  m_SizeDelta: {x: -397.799, y: -829.1051}
+  m_AnchoredPosition: {x: -37.286, y: -140}
+  m_SizeDelta: {x: -1695.0468, y: -829.1051}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1403039180
 MonoBehaviour:
@@ -1764,19 +1775,7 @@ MonoBehaviour:
   - eventID: 6
     callback:
       m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 870687526}
-          m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
-          m_MethodName: UpgradePlayerPower
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
+        m_Calls: []
 --- !u!114 &1403039183
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2578,7 +2577,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &2046387556
 MonoBehaviour:
   m_ObjectHideFlags: 0
