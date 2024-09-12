@@ -10,39 +10,25 @@ public class Card : MonoBehaviour,IBeginDragHandler,IDropHandler,IDragHandler,IE
     public CardSO cardSO;
     public TMP_Text cardNameText;
     public TMP_Text cardValueText;
+    public TMP_Text cardDamageText;
+    public TMP_Text cardDefenseText;
     public Image cardImage;
     public Image cardRarityColor;
-    public Image cardTypeImage;
     public Vector2 oldPosition;
-    [SerializeField]public Image cardBack;
-    public bool isCardOnBack;
-    [SerializeField]public Sprite fireIcon;
-    [SerializeField]public Sprite rockIcon;
-    [SerializeField]public Sprite waterIcon;
-    [SerializeField]public Sprite electricIcon;
-    [SerializeField]public Sprite darkIcon;
-    [SerializeField]public Sprite lightIcon;
-    public void OnBeginDrag(PointerEventData eventData)
-    {
-        oldPosition = transform.localPosition;
-        this.transform.localScale = new Vector2(2,2);
-    }
-
-    public void OnDrag(PointerEventData eventData)
-    {
-        
-        this.transform.position = Input.mousePosition;
-    }
-
-    public void OnDrop(PointerEventData eventData)
-    {
-        this.transform.localScale = new Vector2(1,1);
-    }
+    public int currentDamage;
+    public int currentDefense;
+    public int currentValue;
+    
 
     void Start()
     {
+        currentDamage = cardSO.cardDamage;
+        currentDefense = cardSO.cardDefense;
+        currentValue = cardSO.cardValue;
         cardNameText.text = cardSO.cardName;
-        cardValueText.text = cardSO.cardValue.ToString();
+        cardDamageText.text = currentDamage.ToString();
+        cardDefenseText.text = currentDefense.ToString();
+        cardValueText.text = currentValue.ToString();
         cardImage.sprite = cardSO.cardImage;
         switch (cardSO.cardRarity)
         {
@@ -62,37 +48,14 @@ public class Card : MonoBehaviour,IBeginDragHandler,IDropHandler,IDragHandler,IE
             cardRarityColor.color = new Color(255,128,0);
             break;
         }
-        switch (cardSO.cardType)
-        {
-            case CardType.FIRE:
-            cardTypeImage.sprite = fireIcon;
-            break;
-            case CardType.ROCK:
-            cardTypeImage.sprite = rockIcon;
-            break;
-            case CardType.WATER:
-            cardTypeImage.sprite = waterIcon;
-            break;
-            case CardType.ELECTRIC:
-            cardTypeImage.sprite = electricIcon;
-            break;
-            case CardType.DARK:
-            cardTypeImage.sprite = darkIcon;
-            break;
-            case CardType.LIGHT:
-            cardTypeImage.sprite = lightIcon;
-            break;
-        }
     }
-    public void CardFlip(bool _cardBack){
-        if (_cardBack == true) {
-            cardBack.enabled = true;
-            isCardOnBack = _cardBack;
-        } 
-        else {
-            cardBack.enabled = false;
-            isCardOnBack = _cardBack;
-        } 
+    private void Update() {
+        
+    }
+    public void UpdateCardData(){
+        cardDamageText.text = currentDamage.ToString();
+        cardDefenseText.text = currentDefense.ToString();
+        cardValueText.text = currentValue.ToString();
     }
     public void LoadCardData(CardSO _loadedData){
         _loadedData = this.cardSO;
@@ -100,6 +63,22 @@ public class Card : MonoBehaviour,IBeginDragHandler,IDropHandler,IDragHandler,IE
     
     void ResetPosition(){
         transform.localPosition = oldPosition;
+        this.transform.localScale = new Vector2(1,1);
+    }
+    public void OnBeginDrag(PointerEventData eventData)
+    {
+        oldPosition = transform.localPosition;
+        this.transform.localScale = new Vector2(2,2);
+    }
+
+    public void OnDrag(PointerEventData eventData)
+    {
+        
+        this.transform.position = Input.mousePosition;
+    }
+
+    public void OnDrop(PointerEventData eventData)
+    {
         this.transform.localScale = new Vector2(1,1);
     }
 

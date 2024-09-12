@@ -1,90 +1,116 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 
-public class Enemy : Collectors,IGetHealth,IGetPower
+public class Enemy : Collectors
 {
-    GameObject enemyFieldDropZone;
+    [SerializeField]GameObject playerMiddleField,playerLeftField,playerRightField;
+    [SerializeField]GameObject enemyMiddleField,enemyLeftField,enemyRightField;
     List<Card> enemyDeck = new List<Card>();
-    private void Awake() {
-        enemyFieldDropZone = GameObject.Find("Enemy Field") as GameObject;
-    }
     private void Start() {
         ShuffleDeck(collectorDeck);
         DisplayCards(cardObject, transform);
-        enemyDeck.AddRange(GetComponentsInChildren<Card>());
+        FetchCards();
     }
     private void Update() {
         if (isTurn == true)
         {
-            int tempCardPower = 0;
-            Card tempPlayableCard = new Card();
-            bool isFirstLoop = true;
-            for (int i = 0; i < enemyDeck.Count; i++)
+            if (GameManager.Instance.currentEnemySupply >  0)
             {
-                if (tempCardPower <= enemyDeck[i].cardSO.cardDamage)
-                {
-                    if (isFirstLoop == true)
-                    {
-                        tempCardPower = enemyDeck[i].cardSO.cardDamage;
-                        tempPlayableCard = enemyDeck[i];
-                        isFirstLoop = false;
-                    }
-                    else
-                    {
-                        enemyDeck.Add(tempPlayableCard);
-                        tempCardPower = enemyDeck[i].cardSO.cardDamage;
-                        tempPlayableCard = enemyDeck[i];
-                        enemyDeck.Remove(enemyDeck[i]);
-                    }
-                }
-            }
-            PlayCard(tempPlayableCard);
-        }
-    }
-    void PlayCard(Card playedCard){
-        int ranodmNumber = Random.Range(0, 100);
-        Debug.Log(ranodmNumber);
-        if (ranodmNumber < 50)
-        {
-            playedCard.CardFlip(false);
-            playedCard.transform.parent = enemyFieldDropZone.transform;
-            GameManager.Instance.UpgradeEnemyStats(GetPower(),GetHealth());
-            GameManager.Instance.GiveTurn();
-        }
-        else
-        {
-            playedCard.CardFlip(true);
-            playedCard.transform.parent = enemyFieldDropZone.transform;
-            // GameManager.Instance.UpgradeEnemyStats(GetPower(),GetHealth());
-            GameManager.Instance.GiveTurn();
-        }
-        
-    }
-    public int GetHealth()
-    {
-        int tempHealth = 0;
-        Card[] temp = enemyFieldDropZone.GetComponentsInChildren<Card>();
-        for (int i = 0; i < temp.Length; i++)
-        {
-            if (temp[i].isCardOnBack == false)
-            {
-                tempHealth += temp[i].cardSO.cardHealth;
-            }
-        }
-        return tempHealth;
-    }
+                Debug.Log("While içi");
+                Card playableCard = GetRandomCard();
+                PlayCard(playableCard);
 
-    public int GetPower()
-    {
-        int tempPower = 0;
-        Card[] temp = enemyFieldDropZone.GetComponentsInChildren<Card>();
-        for (int i = 0; i < temp.Length; i++)
-        {
-            if (temp[i].isCardOnBack == false)
-            {
-                tempPower += temp[i].cardSO.cardDamage;
             }
+            else if (GameManager.Instance.currentEnemySupply <=  0)
+            {
+                Debug.Log("if içi");
+                GameManager.Instance.GiveTurn(ref GameManager.Instance.enemySupply,ref GameManager.Instance.currentEnemySupply,ref GameManager.Instance.turnCounter);
+            }
+            // foreach (Card card in enemyDeck)
+            // {
+            //     if (card.currentValue <= GameManager.Instance.currentEnemySupply && GameManager.Instance.currentEnemySupply > 0)
+            //     {
+            //         Card playableCard = GetRandomCard();
+            //         PlayCard(playableCard);
+            //     }
+            //     else
+            //     {
+            //         GameManager.Instance.GiveTurn(ref GameManager.Instance.enemySupply,ref GameManager.Instance.currentEnemySupply,ref GameManager.Instance.turnCounter);
+            //     }
+            // }
         }
-        return tempPower;
+    } 
+
+    void PlayCard(Card playedCard){
+        
+        if (playerLeftField.GetComponentsInChildren<Card>().Length > playerMiddleField.GetComponentsInChildren<Card>().Length + 2 ||playerLeftField.GetComponentsInChildren<Card>().Length > playerRightField.GetComponentsInChildren<Card>().Length + 2)
+        {
+            playedCard.transform.parent = enemyLeftField.transform;
+            FetchCards();
+            GameManager.Instance.currentEnemySupply -= playedCard.currentValue;
+            GameManager.Instance.UpdateEnemySupply();
+            enemyLeftField.GetComponent<FieldWar>().UpdatePowerText();
+        }
+        if (playerMiddleField.GetComponentsInChildren<Card>().Length > playerLeftField.GetComponentsInChildren<Card>().Length + 2 || playerMiddleField.GetComponentsInChildren<Card>().Length > playerRightField.GetComponentsInChildren<Card>().Length + 2)
+        {
+            playedCard.transform.parent = enemyMiddleField.transform;
+            FetchCards();
+            GameManager.Instance.currentEnemySupply -= playedCard.currentValue;
+            GameManager.Instance.UpdateEnemySupply();
+            enemyMiddleField.GetComponent<FieldWar>().UpdatePowerText();
+        }
+        if (playerRightField.GetComponentsInChildren<Card>().Length > playerLeftField.GetComponentsInChildren<Card>().Length + 2 || playerRightField.GetComponentsInChildren<Card>().Length > playerMiddleField.GetComponentsInChildren<Card>().Length + 2)
+        {
+            playedCard.transform.parent = enemyRightField.transform;
+            FetchCards();
+            GameManager.Instance.currentEnemySupply -= playedCard.currentValue;
+            GameManager.Instance.UpdateEnemySupply();
+            enemyRightField.GetComponent<FieldWar>().UpdatePowerText();
+        }
+        else{
+            int ranodmNumber = Random.Range(0, 3);
+            switch (ranodmNumber)
+            {
+                case 0:
+                playedCard.transform.parent = enemyLeftField.transform;
+                FetchCards();
+                GameManager.Instance.currentEnemySupply -= playedCard.currentValue;
+                GameManager.Instance.UpdateEnemySupply();
+                enemyLeftField.GetComponent<FieldWar>().UpdatePowerText();
+                break;
+                case 1:
+                playedCard.transform.parent = enemyMiddleField.transform;
+                FetchCards();
+                GameManager.Instance.currentEnemySupply -= playedCard.currentValue;
+                GameManager.Instance.UpdateEnemySupply();
+                enemyMiddleField.GetComponent<FieldWar>().UpdatePowerText();
+                break;
+                case 2:
+                playedCard.transform.parent = enemyRightField.transform;
+                FetchCards();
+                GameManager.Instance.currentEnemySupply -= playedCard.currentValue;
+                GameManager.Instance.UpdateEnemySupply();
+                enemyRightField.GetComponent<FieldWar>().UpdatePowerText();
+                break;
+            }
+
+        }       
     }
+    Card GetRandomCard(){
+        Card tempPlayableCard;
+        do
+        {
+            tempPlayableCard = enemyDeck[Random.Range(0,enemyDeck.Count)];
+        } while (tempPlayableCard.currentValue <= GameManager.Instance.enemySupply && GameManager.Instance.enemySupply > 0);
+       
+
+        return tempPlayableCard;
+            
+            
+    }
+    void FetchCards(){
+            enemyDeck.Clear();
+            enemyDeck.AddRange(GetComponentsInChildren<Card>());
+        }
 }

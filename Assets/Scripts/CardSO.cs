@@ -8,9 +8,8 @@ public class CardSO : ScriptableObject
     public Sprite cardImage;
     public int cardValue;
     public int cardDamage;
-    public int cardHealth;
+    public int cardDefense;
     public CardRarity cardRarity;
-    public CardType cardType;
 }
 public enum CardRarity
 {
@@ -19,13 +18,4 @@ public enum CardRarity
     VERYRARE,
     EPIC,
     LEGENDARY
-}
-public enum CardType
-{
-    FIRE,
-    ROCK,
-    WATER,
-    ELECTRIC,
-    DARK,
-    LIGHT
 }

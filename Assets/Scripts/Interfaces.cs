@@ -2,21 +2,17 @@ using UnityEngine;
 
 public class Interfaces : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    
 }
 public interface IGetPower{
     public int GetPower();
 }
 public interface IGetHealth{
     public int GetHealth();
+}
+public interface ITakeDamage{
+    public void TakeDamage(int _damage);
+}
+public interface IActionOnTurn{
+    public void TurnAction(ref Card[] cards);
 }

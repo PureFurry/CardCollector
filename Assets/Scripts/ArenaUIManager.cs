@@ -7,65 +7,73 @@ public class ArenaUIManager : MonoBehaviour
 {
     [SerializeField] GameObject playerField;
     [SerializeField] GameObject enemyField;
-    [SerializeField] TMP_Text playerPowerText;
-    [SerializeField] TMP_Text enemyPowerText;
     [SerializeField] TMP_Text playerHealthText;
     [SerializeField] TMP_Text enemyHealthText;
-    [SerializeField] TMP_Text playerComboText;
-    [SerializeField] TMP_Text enemyComboText;
+    [SerializeField] TMP_Text playerSupplyText;
+    [SerializeField] TMP_Text enemySupplyText;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void OnEnable() {
-        SuscribeUpdatePlayerText();
-        SuscribeUpdateEnemyText();
-        SuscribeUpdatePlayerComboText();
-        SuscribeUpdateEnemyComboText();
+        SuscribeUpdatgePlayerHeatlhText();
+        SuscribeUpdatgeEnemyHeatlhText();
+        SuscribeUpdatePlayerSuppylyText();
+        SuscribeUpdateEnemySuppylyText();
     }
     private void OnDisable() {
-        UnSuscribeUpdatePlayerText();
-        UnSuscribeUpdateEnemyText();
-        UnSuscribeUpdatePlayerComboText();
-        UnSuscribeUpdateEnemyComboText();    
+        UnSuscribeUpdatgePlayerHeatlhText();
+        UnSuscribeUpdatgeEnemyHeatlhText();
+        UnSuscribeUpdatePlayerSuppylyText();
+        UnSuscribeUpdateEnemySuppylyText();
     }
-    void SuscribeUpdatePlayerText(){
-        GameManager.OnPlayerPowerUpdate += PlayerTextUpdate;
+
+
+    #region SupplyUpdate
+    void SuscribeUpdatePlayerSuppylyText(){
+        GameManager.OnPlayerSupplyUpdate += PlayerSuppylyTextUpdate;
     }
-    void UnSuscribeUpdatePlayerText(){
-        GameManager.OnPlayerPowerUpdate -= PlayerTextUpdate;
+
+    void UnSuscribeUpdatePlayerSuppylyText(){
+        GameManager.OnPlayerSupplyUpdate -= PlayerSuppylyTextUpdate;
     }
-    void SuscribeUpdateEnemyText(){
-        GameManager.OnEnemyStatsUpdate += EnemyTextUpdate;
+    void SuscribeUpdateEnemySuppylyText(){
+        GameManager.OnEnemySupplyUpdate += EnemySupplyTextUpdate;
     }
-    void UnSuscribeUpdateEnemyText(){
-        GameManager.OnEnemyStatsUpdate -= EnemyTextUpdate;
+    void UnSuscribeUpdateEnemySuppylyText(){
+        GameManager.OnEnemySupplyUpdate -= EnemySupplyTextUpdate;
     }
-    void SuscribeUpdatePlayerComboText(){
-        GameManager.PlayerComboUpdate += PlayerComboTextUpdate;
-    }
-    void UnSuscribeUpdatePlayerComboText(){
-        GameManager.PlayerComboUpdate -= PlayerComboTextUpdate;
-    }
-    void SuscribeUpdateEnemyComboText(){
-        GameManager.EnemyComboUpdate += EnemyComboTextUpdate;
-    }
-    void UnSuscribeUpdateEnemyComboText(){
-        GameManager.EnemyComboUpdate -= EnemyComboTextUpdate;
-    }    
-    
-    private void PlayerComboTextUpdate(int comboAmount){
-        playerComboText.text = "X" + comboAmount.ToString();
-    }
-    private void EnemyComboTextUpdate(int comboAmount){
-        enemyComboText.text = "X" + comboAmount.ToString();
-    }
-    private void EnemyTextUpdate(int powerAmount, int healthAmount)
+    private void PlayerSuppylyTextUpdate(int supplyAmount)
     {
-        enemyPowerText.text = powerAmount.ToString();
+        playerSupplyText.text = supplyAmount.ToString();
+    }
+    private void EnemySupplyTextUpdate(int supplyAmount)
+    {
+        enemySupplyText.text = supplyAmount.ToString();
+    }
+
+    #endregion
+
+
+    #region HealthUpdate
+    void SuscribeUpdatgePlayerHeatlhText(){
+        GameManager.OnPlayerHealthUpdate += PlayerTextUpdate;
+    }
+    void UnSuscribeUpdatgePlayerHeatlhText(){
+        GameManager.OnPlayerHealthUpdate -= PlayerTextUpdate;
+    }
+    void SuscribeUpdatgeEnemyHeatlhText(){
+        GameManager.OnEnemyHealthUpdate += EnemyTextUpdate;
+    }
+    void UnSuscribeUpdatgeEnemyHeatlhText(){
+        GameManager.OnEnemyHealthUpdate -= EnemyTextUpdate;
+    }
+    private void EnemyTextUpdate(int healthAmount)
+    {
         enemyHealthText.text = healthAmount.ToString();
     }
 
-    private void PlayerTextUpdate(int powerAmount,int healthAmount)
+    private void PlayerTextUpdate(int healthAmount)
     {
-        playerPowerText.text = powerAmount.ToString();
         playerHealthText.text = healthAmount.ToString();
     }
+    #endregion
 }

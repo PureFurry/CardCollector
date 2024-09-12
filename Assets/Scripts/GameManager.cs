@@ -1,24 +1,25 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set;}
-    public static event Action<int,int> OnPlayerPowerUpdate;
-    public static event Action<int,int> OnEnemyStatsUpdate;
-    public static event Action<int> PlayerComboUpdate;
-    public static event Action<int> EnemyComboUpdate;
-    public int playerPower,enemyPower,playerHealth,enemyHealth, currentPlayerHealth;
-    public bool isPlayerAttacking, isEnemyAttacking, isItFirstTurn;
-    public Dictionary<int, int> combo;
-    public int playerCombo,enemyCombo;
-    public int playerAttackCount, enemyAttackCount, playerComboCounter, enemyComboCounter;
+
+    public static event Action<int> OnPlayerHealthUpdate;
+    public static event Action<int> OnEnemyHealthUpdate;
+    public static event Action<int> OnPlayerSupplyUpdate;
+    public static event Action<int> OnEnemySupplyUpdate;
+    public static event Action OnEndTurn;
     public Enemy enemy;
     public Player player;
     public GameStates gameStates;
+    public int globalWeath;
+    public int playerHealth,enemyHealth,playerSupply,enemySupply,currentPlayerSupply,currentEnemySupply;
+    public int startingHealthPoint,startingSupplyPoint;
+    public int turnCounter;
     private void Awake() {
         if (Instance == null)
         {
@@ -29,123 +30,83 @@ public class GameManager : MonoBehaviour
         gameStates = GameStates.START;
         player = GameObject.Find("Player Hand").GetComponent<Player>();
         enemy = GameObject.Find("Enemy Hand").GetComponent<Enemy>();
-        ResetState();
     }
     private void Update() {
         switch (gameStates)
         {
             case GameStates.START:
-            isItFirstTurn = true;
-            combo.Add(1,1);
-            combo.Add(2,1);
-            combo.Add(3,2);
-            combo.Add(4,2);
-            combo.Add(5,2);
-            combo.Add(6,3);
-            playerComboCounter = 1;
-            enemyComboCounter = 1;
-            playerCombo = 1;
-            enemyCombo = 1;
-            PlayerComboUpdate?.Invoke(playerCombo);
+            playerHealth = startingHealthPoint;
+            enemyHealth = startingHealthPoint;
+            playerSupply = startingSupplyPoint;
+            enemySupply = startingSupplyPoint;
+            currentPlayerSupply = playerSupply;
+            currentEnemySupply = enemySupply;
+            OnPlayerSupplyUpdate?.Invoke(currentPlayerSupply);
+            OnEnemySupplyUpdate?.Invoke(currentEnemySupply);
+            OnPlayerHealthUpdate?.Invoke(playerHealth);
+            OnEnemyHealthUpdate?.Invoke(enemyHealth);
             gameStates = GameStates.PLAYERTURN;
             break;
+
             case GameStates.RESET:
-            playerPower = 0;
-            enemyPower = 0;
+
             gameStates = GameStates.PLAYERTURN;
             break;
+
+
             case GameStates.PLAYERTURN:
+            // Debug.Log("PLayer Turn");
+            OnPlayerSupplyUpdate?.Invoke(currentPlayerSupply);
+            OnEnemySupplyUpdate?.Invoke(currentEnemySupply);
+            OnPlayerHealthUpdate?.Invoke(playerHealth);
+            OnEnemyHealthUpdate?.Invoke(enemyHealth);
             enemy.isTurn = false;
             player.isTurn = true;
             break;
+
+
             case GameStates.ENEMYTURN:
+            // Debug.Log("Enemy Turn");
+            OnPlayerSupplyUpdate?.Invoke(currentPlayerSupply);
+            OnEnemySupplyUpdate?.Invoke(currentEnemySupply);
+            OnPlayerHealthUpdate?.Invoke(playerHealth);
+            OnEnemyHealthUpdate?.Invoke(enemyHealth);
             enemy.isTurn = true;
             player.isTurn = false;
             break;
+
+
             case GameStates.END:
-            int tempPlayerPower = playerPower;
-            int tempEnemyPower = enemyPower;
-            playerHealth -= tempEnemyPower;
-            enemyHealth -=  tempPlayerPower;
             gameStates = GameStates.RESET;
             break;
         }
     }
-    public void UpgradePlayerPower(int _playerPower,int _playerHealth){
-        OnPlayerPowerUpdate?.Invoke(_playerPower,_playerHealth);
-        playerPower = _playerPower;
-        playerHealth = _playerHealth;
+    public bool GiveTurn(ref int supply, ref int currentSupply,ref int turnCounter){
+        supply++;
+        currentSupply = supply;
+        turnCounter++;
+        OnEndTurn?.Invoke();
+        gameStates = GameStates.PLAYERTURN;
+        return true;
     }
-    public void UpgradeEnemyStats(int _enemyPower,int _enemyHealth){
-        OnEnemyStatsUpdate?.Invoke(_enemyPower, _enemyHealth);
-        enemyPower = _enemyPower;
-        enemyHealth = _enemyHealth;
+    public void PlayerGiveTurn(){
+        playerSupply++;
+        currentPlayerSupply = playerSupply;
+        turnCounter++;
+        OnEndTurn?.Invoke();
+        StartCoroutine(WaitAndEndTurn());
     }
-    public void ResetState(){
-        gameStates = GameStates.RESET;
+    public void UpdateEnemySupply(){
+        OnEnemySupplyUpdate?.Invoke(currentEnemySupply);
     }
-    public void GiveTurn(){
-        if (GameObject.FindGameObjectWithTag("AskPanel") == null)
-        {
-            if (player.isTurn == true)
-            {
-                isPlayerAttacking = GameObject.Find("Player Attack").GetComponent<Toggle>().isOn;
-                if (isPlayerAttacking && playerAttackCount > 0)
-                {
-                    Card[] playerCardonField = GameObject.Find("Player Field").GetComponentsInChildren<Card>();
-                    Card[] enemyCardsonField = GameObject.Find("Enemy Field").GetComponentsInChildren<Card>();
-                    if (isItFirstTurn)
-                    {
-                        isItFirstTurn = false;
-                    }
-                    if (playerPower > enemyPower)
-                    {
-                        for (int i = 0; i < enemyCardsonField.Length; i++)
-                        {
-                            for (int j = 0; j < playerCardonField.Length; j++)
-                            {
-                                if (playerCardonField[i].cardSO.cardValue == enemyCardsonField[i].cardSO.cardValue && playerCardonField[i].cardSO.cardDamage > enemyCardsonField[i].cardSO.cardDamage)
-                                {
-                                    playerComboCounter++;
-                                    playerCombo = combo[playerComboCounter];
-                                    PlayerComboUpdate?.Invoke(playerCombo);
-                                    Destroy(enemyCardsonField[i].gameObject); 
-                                }
-                            }
-                        }
-                    }
-                    else
-                    {
-                        playerHealth -= playerPower /3 +2;
-                        gameStates = GameStates.ENEMYTURN;
-                    }
-                }
-                else
-                {
-                    gameStates = GameStates.ENEMYTURN;
-                } 
-            }
-            if (enemy.isTurn == true)
-            {
-                isEnemyAttacking = GameObject.Find("Enemy Attack").GetComponent<Toggle>().isOn;
-                if (isEnemyAttacking)
-                {
-                    playerHealth -= enemyPower;
-                    gameStates = GameStates.PLAYERTURN;
-                }
-                else
-                {
-                    gameStates = GameStates.PLAYERTURN;
-                }
-            }
-        }
+    public void UpdatePlayerSupply(){
+        OnPlayerSupplyUpdate?.Invoke(currentPlayerSupply);
     }
-    void PlayerComboCharger(){
-        if (playerComboCounter == 1 )
-        {
-            
-        }
-    }
+    private IEnumerator WaitAndEndTurn(){
+        Debug.Log("enımator calıştı");
+    yield return new WaitForSeconds(0.2f); // 0.1 saniye bekleme, ihtiyaca göre artırılabilir
+    gameStates = GameStates.ENEMYTURN;
+}
 }
 public enum GameStates
 {

@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 272ed1ffd089656448503497e2d271e0
+guid: ef3c299f2be1cdb408794e6b4cc5a965
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -7819309395084836649
-    second: magic_the_gathering_card_Light (1)_0
+      213: 827538889749247048
+    second: attack_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -97,7 +97,7 @@ TextureImporter:
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 4
-    buildTarget: Android
+    buildTarget: WindowsStoreApps
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
@@ -110,7 +110,7 @@ TextureImporter:
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 4
-    buildTarget: WindowsStoreApps
+    buildTarget: Android
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
@@ -126,13 +126,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: magic_the_gathering_card_Light (1)_0
+      name: attack_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 512
-        height: 768
+        x: 41
+        y: 41
+        width: 430
+        height: 430
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -141,8 +141,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 7d0081d988b3c7390800000000000000
-      internalID: -7819309395084836649
+      spriteID: 84433595c320c7b00800000000000000
+      internalID: 827538889749247048
       vertices: []
       indices: 
       edges: []
@@ -159,7 +159,7 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      magic_the_gathering_card_Light (1)_0: -7819309395084836649
+      attack_0: 827538889749247048
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
