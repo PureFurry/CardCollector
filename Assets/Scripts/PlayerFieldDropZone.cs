@@ -9,7 +9,7 @@ public class PlayerFieldDropZone : DropZone
 {
     public override void OnDrop(PointerEventData eventData){
         base.OnDrop(eventData);
-        GameObject askPanel = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/AskPanel.prefab");
+        GameObject askPanel = Resources.Load<GameObject>("Assets/Prefabs/AskPanel.prefab");
         Card gettingCard = eventData.pointerDrag.GetComponent<Card>();
         GameObject createdPanel = Instantiate(askPanel,transform.position,Quaternion.identity);
         createdPanel.transform.parent = GameObject.Find("Canvas").transform;

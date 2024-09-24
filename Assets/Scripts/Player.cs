@@ -8,7 +8,7 @@ public class Player : Collectors
 {
     private void Start() {
         ShuffleDeck(collectorDeck);
-        DisplayCards(cardObject, transform);
+        DisplayCards(cardObject, transform,5);
     }
     private void Update() {
         if (isTurn == true)

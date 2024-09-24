@@ -5,13 +5,24 @@ using UnityEngine;
 public class Collectors : MonoBehaviour
 {
     public bool isTurn;
-    [SerializeField]protected List<CardSO> collectorDeck;
-    [SerializeField]protected GameObject cardObject;
-    [SerializeField]protected int listLenght;
+    public CardDeckSO cardDeckSO;
+    public List<CardSO> collectorDeck;
+    public GameObject cardObject;
+    public int listLenght;
     public bool isAttacking;
     private void Awake() {
-        cardObject = AssetDatabase.LoadAssetAtPath("Assets/Prefabs/Card.prefab",typeof(GameObject)) as GameObject;
-
+        foreach (CardSO card in cardDeckSO.cardDeck)
+        {
+            if (card != null)
+            {
+                int start = 0;
+                Debug.Log(start++);
+                collectorDeck.Add(card);
+            }
+        }
+    }
+    private void Start() {
+        
     }
     protected void ShuffleDeck(List<CardSO> _deck){
         // Fisher-Yates karıştırma algoritması kullanarak kartları karıştırın
@@ -24,14 +35,15 @@ public class Collectors : MonoBehaviour
             collectorDeck.Add(_deck[j]);
         }
     }
-    public void DisplayCards(GameObject cardPrefab,Transform cardContainer){
+    public void DisplayCards(GameObject cardPrefab,Transform cardContainer,int drawTime){
         
-        for (int i = 0; i < listLenght; i++)
+        for (int i = 0; i < drawTime; i++)
         {
             GameObject createdCard = Instantiate(cardPrefab,cardContainer.transform.position, Quaternion.identity);
             createdCard.TryGetComponent<Card>(out Card card);
             card.cardSO = collectorDeck[i];
-            createdCard.transform.parent = cardContainer.transform;
+            collectorDeck.Remove(collectorDeck[i]);
+            createdCard.transform.SetParent(cardContainer.transform);
         }
     }
 }

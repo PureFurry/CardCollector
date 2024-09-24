@@ -10,7 +10,9 @@ public class FieldWar : DropZone,ITakeDamage
     {
         if (fieldHealth > 0)
         {
-            // Array.Clear(cardPool,0,cardPool.Length);
+            if (this.GetComponentsInChildren<Card>().Length > 0)
+            {
+                // Array.Clear(cardPool,0,cardPool.Length);
             cardPool = FetCardPool();
             foreach (Card item in cardPool)
             {
@@ -19,12 +21,16 @@ public class FieldWar : DropZone,ITakeDamage
             Card[] destroyCard = CardDestroyPool(ref cardPool,_damage);
             Debug.Log(destroyCard);
             Destroy(destroyCard[UnityEngine.Random.Range(0,destroyCard.Length)].gameObject);
+            GetPower();
+            UpdatePowerText(); 
+            }
+            else this.fieldHealth -= _damage;
         }
         else if (this.fieldHealth <= 0)
         {
             
         }
-        this.fieldHealth -= _damage;
+        
     }
     private void OnEnable() {
         SuscribeTurnAction();
@@ -46,7 +52,11 @@ public class FieldWar : DropZone,ITakeDamage
             int hitChance = UnityEngine.Random.Range(1,12);
             if (hitChance + GameManager.Instance.globalWeath > missChance)
             {
-                rivalField.GetComponent<FieldWar>().TakeDamage(GetPower());
+                if (rivalField.GetComponentsInChildren<Card>() != null)
+                {
+                    rivalField.GetComponent<FieldWar>().TakeDamage(GetPower());
+                    Debug.Log("Action");
+                }
             }
             else
             {

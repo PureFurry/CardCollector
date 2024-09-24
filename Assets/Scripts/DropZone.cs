@@ -4,7 +4,6 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
-
 public class DropZone : MonoBehaviour,IDropHandler,IGetPower
 {
     protected Card[] cardPool;
@@ -46,7 +45,7 @@ public class DropZone : MonoBehaviour,IDropHandler,IGetPower
         {
             eventData.pointerDrag.GetComponent<Card>().oldPosition = this.transform.localPosition;
             eventData.pointerDrag.gameObject.transform.localScale = new Vector2(1,1);
-            eventData.pointerDrag.GetComponent<Card>().transform.parent = this.transform;
+            eventData.pointerDrag.GetComponent<Card>().transform.SetParent(this.transform);
             GameManager.Instance.currentPlayerSupply -= eventData.pointerDrag.GetComponent<Card>().currentValue;
             GameManager.Instance.UpdatePlayerSupply();
             UpdatePowerText(); 

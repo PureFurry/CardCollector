@@ -1,0 +1,1 @@
+C:\Users\User\Documents\GitHub\CardCollector\Library\Bee\Android\Prj\IL2CPP\Gradle\unityLibrary\build\intermediates\cxx\RelWithDebInfo\2y5m2d13\obj\arm64-v8a

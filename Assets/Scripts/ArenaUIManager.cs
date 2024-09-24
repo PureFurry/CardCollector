@@ -11,6 +11,8 @@ public class ArenaUIManager : MonoBehaviour
     [SerializeField] TMP_Text enemyHealthText;
     [SerializeField] TMP_Text playerSupplyText;
     [SerializeField] TMP_Text enemySupplyText;
+    [SerializeField] TMP_Text playerDeckText;
+    [SerializeField] TMP_Text enemyDeckText;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void OnEnable() {
@@ -18,14 +20,39 @@ public class ArenaUIManager : MonoBehaviour
         SuscribeUpdatgeEnemyHeatlhText();
         SuscribeUpdatePlayerSuppylyText();
         SuscribeUpdateEnemySuppylyText();
+        SuscribePlayerDecsizeUpdate();
+        SuscribeEnemyDeckSizeUpdate();
     }
     private void OnDisable() {
         UnSuscribeUpdatgePlayerHeatlhText();
         UnSuscribeUpdatgeEnemyHeatlhText();
         UnSuscribeUpdatePlayerSuppylyText();
         UnSuscribeUpdateEnemySuppylyText();
+        UnSuscribePlayerDeckSizeUpdate();
+        UnSuscribeEnemyDeckSizeUpdate();
     }
 
+    #region  DeckSizeUpdate
+    
+    void SuscribePlayerDecsizeUpdate(){
+        GameManager.OnPlayerDeckSize += PlayerDeckSizeText;
+    }
+    void SuscribeEnemyDeckSizeUpdate(){
+        GameManager.OnEnemyDeckSize += EnemyDeckSizeText;
+    }
+    void UnSuscribePlayerDeckSizeUpdate(){
+        GameManager.OnPlayerDeckSize -= PlayerDeckSizeText;
+    }
+    void UnSuscribeEnemyDeckSizeUpdate(){
+        GameManager.OnEnemyDeckSize -= EnemyDeckSizeText;
+    }
+    void PlayerDeckSizeText(int deckSize){
+        playerDeckText.text = deckSize.ToString();
+    }
+    void EnemyDeckSizeText(int deckSize){
+        enemyDeckText.text = deckSize.ToString();
+    }
+    #endregion
 
     #region SupplyUpdate
     void SuscribeUpdatePlayerSuppylyText(){

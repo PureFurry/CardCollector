@@ -12,6 +12,8 @@ public class GameManager : MonoBehaviour
     public static event Action<int> OnEnemyHealthUpdate;
     public static event Action<int> OnPlayerSupplyUpdate;
     public static event Action<int> OnEnemySupplyUpdate;
+    public static event Action<int> OnPlayerDeckSize;
+    public static event Action<int> OnEnemyDeckSize;
     public static event Action OnEndTurn;
     public Enemy enemy;
     public Player player;
@@ -20,6 +22,7 @@ public class GameManager : MonoBehaviour
     public int playerHealth,enemyHealth,playerSupply,enemySupply,currentPlayerSupply,currentEnemySupply;
     public int startingHealthPoint,startingSupplyPoint;
     public int turnCounter;
+    public bool isPlayerFirstTurn = true,isEnemyFirstTurn = true;
     private void Awake() {
         if (Instance == null)
         {
@@ -38,13 +41,16 @@ public class GameManager : MonoBehaviour
             playerHealth = startingHealthPoint;
             enemyHealth = startingHealthPoint;
             playerSupply = startingSupplyPoint;
-            enemySupply = startingSupplyPoint;
             currentPlayerSupply = playerSupply;
             currentEnemySupply = enemySupply;
+            playerSupply++;
+            currentPlayerSupply = playerSupply;
             OnPlayerSupplyUpdate?.Invoke(currentPlayerSupply);
             OnEnemySupplyUpdate?.Invoke(currentEnemySupply);
             OnPlayerHealthUpdate?.Invoke(playerHealth);
             OnEnemyHealthUpdate?.Invoke(enemyHealth);
+            OnPlayerDeckSize?.Invoke(player.collectorDeck.Count);
+            OnEnemyDeckSize?.Invoke(player.collectorDeck.Count);
             gameStates = GameStates.PLAYERTURN;
             break;
 
@@ -52,7 +58,6 @@ public class GameManager : MonoBehaviour
 
             gameStates = GameStates.PLAYERTURN;
             break;
-
 
             case GameStates.PLAYERTURN:
             // Debug.Log("PLayer Turn");
@@ -63,9 +68,8 @@ public class GameManager : MonoBehaviour
             enemy.isTurn = false;
             player.isTurn = true;
             break;
-
-
             case GameStates.ENEMYTURN:
+            Debug.Log(currentEnemySupply);
             // Debug.Log("Enemy Turn");
             OnPlayerSupplyUpdate?.Invoke(currentPlayerSupply);
             OnEnemySupplyUpdate?.Invoke(currentEnemySupply);
@@ -74,8 +78,6 @@ public class GameManager : MonoBehaviour
             enemy.isTurn = true;
             player.isTurn = false;
             break;
-
-
             case GameStates.END:
             gameStates = GameStates.RESET;
             break;
@@ -85,16 +87,25 @@ public class GameManager : MonoBehaviour
         supply++;
         currentSupply = supply;
         turnCounter++;
-        OnEndTurn?.Invoke();
-        gameStates = GameStates.PLAYERTURN;
+        player.DisplayCards(player.cardObject,player.transform,1);
+        OnPlayerDeckSize?.Invoke(player.collectorDeck.Count);
+        if (isEnemyFirstTurn) isEnemyFirstTurn = false;
+        else OnEndTurn?.Invoke();   
+        gameStates = GameStates.PLAYERTURN; 
+    
         return true;
     }
     public void PlayerGiveTurn(){
         playerSupply++;
         currentPlayerSupply = playerSupply;
         turnCounter++;
-        OnEndTurn?.Invoke();
-        StartCoroutine(WaitAndEndTurn());
+        if (isPlayerFirstTurn){
+        isPlayerFirstTurn = false;
+        }
+        else OnEndTurn?.Invoke();
+        enemy.DisplayCards(enemy.cardObject,enemy.transform,1);
+        OnEnemyDeckSize?.Invoke(player.collectorDeck.Count);
+        gameStates = GameStates.ENEMYTURN;
     }
     public void UpdateEnemySupply(){
         OnEnemySupplyUpdate?.Invoke(currentEnemySupply);
@@ -103,7 +114,7 @@ public class GameManager : MonoBehaviour
         OnPlayerSupplyUpdate?.Invoke(currentPlayerSupply);
     }
     private IEnumerator WaitAndEndTurn(){
-        Debug.Log("enımator calıştı");
+    Debug.Log("enımator calıştı");
     yield return new WaitForSeconds(0.2f); // 0.1 saniye bekleme, ihtiyaca göre artırılabilir
     gameStates = GameStates.ENEMYTURN;
 }
