@@ -1,117 +1,102 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
+using DG.Tweening;
 
 public class Enemy : Collectors
 {
-    [SerializeField]GameObject playerMiddleField,playerLeftField,playerRightField;
-    [SerializeField]GameObject enemyMiddleField,enemyLeftField,enemyRightField;
-    List<Card> enemyDeck = new List<Card>();
-    private void Start() {
+    [SerializeField] private GameObject playerMiddleField, playerLeftField, playerRightField;
+    [SerializeField] private GameObject enemyMiddleField, enemyLeftField, enemyRightField;
+    private List<Card> enemyDeck = new List<Card>();
+    public bool isPlaying = false;
+
+    private void Start()
+    {
         ShuffleDeck(collectorDeck);
-        DisplayCards(cardObject, transform,5);
+        DisplayCards(cardObject, transform, 5);
         FetchCards();
     }
-    private void Update() {
-        if (isTurn == true)
-        {
-            if (GameManager.Instance.currentEnemySupply >  0)
-            {
-                Debug.Log("enemy current SUpply Okey");
-                Card playableCard = GetRandomCard();
-                PlayCard(playableCard);
 
-            }
-            else if (GameManager.Instance.currentEnemySupply <=  0)
-            {
-                Debug.Log("enemy current SUpply Low");
-                GameManager.Instance.GiveTurn(ref GameManager.Instance.enemySupply,ref GameManager.Instance.currentEnemySupply,ref GameManager.Instance.turnCounter);
-            }
-        }
-    } 
-    // Plays a card from the enemy's deck, determining the field to place it in based on the number of cards in each player field.
-    // If a player field has significantly more cards than the others, the card is placed in the corresponding enemy field.
-    // Otherwise, a random enemy field is chosen.
-    // The card's value is subtracted from the enemy's current supply, and the supply is updated.
-    // The power text of the chosen enemy field is also updated.
-    void PlayCard(Card playedCard){
-        
-        if (playerLeftField.GetComponentsInChildren<Card>().Length > playerMiddleField.GetComponentsInChildren<Card>().Length + 2 ||playerLeftField.GetComponentsInChildren<Card>().Length > playerRightField.GetComponentsInChildren<Card>().Length + 2)
-        {
-            Debug.Log("Cokluktan gelen sol");
-            playedCard.transform.parent = enemyLeftField.transform;
-            FetchCards();
-            GameManager.Instance.currentEnemySupply -= playedCard.currentValue;
-            GameManager.Instance.UpdateEnemySupply();
-            enemyLeftField.GetComponent<FieldWar>().UpdatePowerText();
-            return;
-        }
-        if (playerMiddleField.GetComponentsInChildren<Card>().Length > playerLeftField.GetComponentsInChildren<Card>().Length + 2 || playerMiddleField.GetComponentsInChildren<Card>().Length > playerRightField.GetComponentsInChildren<Card>().Length + 2)
-        {
-            Debug.Log("Cokluktan gelen orta");
-            playedCard.transform.parent = enemyMiddleField.transform;
-            FetchCards();
-            GameManager.Instance.currentEnemySupply -= playedCard.currentValue;
-            GameManager.Instance.UpdateEnemySupply();
-            enemyMiddleField.GetComponent<FieldWar>().UpdatePowerText();
-            return;
-        }
-        if (playerRightField.GetComponentsInChildren<Card>().Length > playerLeftField.GetComponentsInChildren<Card>().Length + 2 || playerRightField.GetComponentsInChildren<Card>().Length > playerMiddleField.GetComponentsInChildren<Card>().Length + 2)
-        {
-            Debug.Log("Cokluktan gelen sağ");
-            playedCard.transform.parent = enemyRightField.transform;
-            FetchCards();
-            GameManager.Instance.currentEnemySupply -= playedCard.currentValue;
-            GameManager.Instance.UpdateEnemySupply();
-            enemyRightField.GetComponent<FieldWar>().UpdatePowerText();
-            return;
-        }
-        else{
-            int ranodmNumber = Random.Range(0, 3);
-            switch (ranodmNumber)
-            {
-                case 0:
-                Debug.Log("Direkt sol");
-                playedCard.transform.parent = enemyLeftField.transform;
-                FetchCards();
-                GameManager.Instance.currentEnemySupply -= playedCard.currentValue;
-                GameManager.Instance.UpdateEnemySupply();
-                enemyLeftField.GetComponent<FieldWar>().UpdatePowerText();
-                break;
-                case 1:
-                Debug.Log("Direkt orta");
-                playedCard.transform.parent = enemyMiddleField.transform;
-                FetchCards();
-                GameManager.Instance.currentEnemySupply -= playedCard.currentValue;
-                GameManager.Instance.UpdateEnemySupply();
-                enemyMiddleField.GetComponent<FieldWar>().UpdatePowerText();
-                break;
-                case 2:
-                Debug.Log("Direkt sağ");
-                playedCard.transform.parent = enemyRightField.transform;
-                FetchCards();
-                GameManager.Instance.currentEnemySupply -= playedCard.currentValue;
-                GameManager.Instance.UpdateEnemySupply();
-                enemyRightField.GetComponent<FieldWar>().UpdatePowerText();
-                break;
-            }
+    private void Update()
+    {
+        if (!isTurn || isPlaying) return; // Kart oynanırken işlem yapılmaması için kontrol.
 
-        }       
+    if (GameManager.Instance.currentEnemySupply > 0)
+    {
+        Card playableCard = GetRandomCard();
+        if (playableCard != null && GameManager.Instance.currentEnemySupply > 0)
+        {
+            isPlaying = true; // Kart oynandığı sırada diğer işlemleri engelle.
+            PlayCard(playableCard);
+        }
     }
-    Card GetRandomCard(){
-        Card tempPlayableCard;
-        do
-        {
-            tempPlayableCard = enemyDeck[Random.Range(0,enemyDeck.Count)];
-        } while (tempPlayableCard.currentValue <= GameManager.Instance.enemySupply && GameManager.Instance.enemySupply > 0);
-        Debug.Log(tempPlayableCard.cardValueText);
-
-        return tempPlayableCard;
-            
-            
+    else
+    {
+        GameManager.Instance.GiveTurn(ref GameManager.Instance.enemySupply, ref GameManager.Instance.currentEnemySupply, ref GameManager.Instance.turnCounter);
     }
-    void FetchCards(){
-            enemyDeck.Clear();
-            enemyDeck.AddRange(GetComponentsInChildren<Card>());
+    }
+
+    private void PlayCard(Card playedCard)
+    {
+        Transform targetField = GetTargetField();
+
+        playedCard.transform.DOMove(transform.position, 0.2f).OnComplete(()=> playedCard.transform.DOScale(new Vector2(playedCard.transform.localScale.x + 1,playedCard.transform.localScale.y + 1),0.2f).OnComplete(()=> playedCard.transform.DOScale(new Vector2(playedCard.transform.localScale.x - 1,playedCard.transform.localScale.y - 1),0.2f))).OnComplete(() =>
+        {
+            playedCard.transform.SetParent(targetField);
+            FetchCards();
+            GameManager.Instance.currentEnemySupply -= playedCard.currentValue;
+            GameManager.Instance.UpdateEnemySupply();
+            targetField.GetComponent<FieldWar>().UpdatePowerText();
+            
+            // Kart oynandıktan sonra isPlaying'i tekrar false yaparak diğer işlemlere izin ver.
+            isPlaying = false;
+        });
+    }
+
+    private Transform GetTargetField()
+    {
+        int playerLeftCount = playerLeftField.GetComponentsInChildren<Card>().Length;
+        int playerMiddleCount = playerMiddleField.GetComponentsInChildren<Card>().Length;
+        int playerRightCount = playerRightField.GetComponentsInChildren<Card>().Length;
+
+        // Compare and find the best target field for the card
+        if (playerLeftCount > playerMiddleCount + 2 || playerLeftCount > playerRightCount + 2)
+        {
+            return enemyLeftField.transform;
         }
+        if (playerMiddleCount > playerLeftCount + 2 || playerMiddleCount > playerRightCount + 2)
+        {
+            return enemyMiddleField.transform;
+        }
+        if (playerRightCount > playerLeftCount + 2 || playerRightCount > playerMiddleCount + 2)
+        {
+            return enemyRightField.transform;
+        }
+
+        // Default case if no field has a significant difference
+        return Random.Range(0, 3) switch
+        {
+            0 => enemyLeftField.transform,
+            1 => enemyMiddleField.transform,
+            2 => enemyRightField.transform,
+            _ => enemyMiddleField.transform
+        };
+    }
+
+    private Card GetRandomCard()
+    {
+        if (enemyDeck.Count == 0) return null;
+
+        // Oynanabilir kartları filtrele.
+        List<Card> playableCards = enemyDeck.FindAll(card => card.currentValue <= GameManager.Instance.currentEnemySupply);
+        if (playableCards.Count == 0) return null;
+
+        return playableCards[Random.Range(0, playableCards.Count)];
+    }
+
+    private void FetchCards()
+    {
+        enemyDeck.Clear();
+        enemyDeck.AddRange(GetComponentsInChildren<Card>());
+    }
 }

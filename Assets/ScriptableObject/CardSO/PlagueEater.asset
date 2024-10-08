@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a7301f74b3fd7f4888ee3ec73b2d1ff, type: 3}
+  m_Name: PlagueEater
+  m_EditorClassIdentifier: 
+  cardName: Plague Eater
+  cardImage: {fileID: 630950672276126615, guid: 9656a55f75f1c9847997071daa226d9b, type: 3}
+  cardValue: 2
+  cardDamage: 1
+  cardDefense: 2
+  cardRarity: 1

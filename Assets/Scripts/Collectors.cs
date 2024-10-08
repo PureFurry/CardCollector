@@ -15,8 +15,6 @@ public class Collectors : MonoBehaviour
         {
             if (card != null)
             {
-                int start = 0;
-                Debug.Log(start++);
                 collectorDeck.Add(card);
             }
         }
@@ -25,6 +23,8 @@ public class Collectors : MonoBehaviour
         
     }
     protected void ShuffleDeck(List<CardSO> _deck){
+        List<CardSO> tempdeck;
+        tempdeck = collectorDeck;
         // Fisher-Yates karıştırma algoritması kullanarak kartları karıştırın
         for (int i = _deck.Count - 1; i > 0; i--)
         {
@@ -32,8 +32,9 @@ public class Collectors : MonoBehaviour
             CardSO temp = _deck[i];
             _deck[i] = _deck[j];
             _deck[j] = temp;
-            collectorDeck.Add(_deck[j]);
+            tempdeck.Add(_deck[j]);
         }
+        collectorDeck = tempdeck;
     }
     public void DisplayCards(GameObject cardPrefab,Transform cardContainer,int drawTime){
         

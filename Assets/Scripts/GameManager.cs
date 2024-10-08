@@ -69,7 +69,6 @@ public class GameManager : MonoBehaviour
             player.isTurn = true;
             break;
             case GameStates.ENEMYTURN:
-            Debug.Log(currentEnemySupply);
             // Debug.Log("Enemy Turn");
             OnPlayerSupplyUpdate?.Invoke(currentPlayerSupply);
             OnEnemySupplyUpdate?.Invoke(currentEnemySupply);
@@ -96,6 +95,7 @@ public class GameManager : MonoBehaviour
         return true;
     }
     public void PlayerGiveTurn(){
+        if (enemy.isPlaying)return;
         playerSupply++;
         currentPlayerSupply = playerSupply;
         turnCounter++;

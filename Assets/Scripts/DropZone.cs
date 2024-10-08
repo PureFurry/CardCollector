@@ -1,58 +1,57 @@
 using System.Collections.Generic;
 using System.Linq;
+using DG.Tweening;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 public class DropZone : MonoBehaviour,IDropHandler,IGetPower
 {
-    protected Card[] cardPool;
     [SerializeField] protected TMP_Text fieldPowerText;
+    protected Card[] cardPool;
 
-    //Old Function
-    // public int GetHealth()
-    // {
-    //     int tempHealth = 0;
-    //     Card[] temp = transform.GetComponentsInChildren<Card>();
-    //     for (int i = 0; i < temp.Length; i++)
-    //     {
-    //             tempHealth += temp[i].cardSO.cardHealth;
-    //     }
-    //     return tempHealth;
-    // }
-
-    private void Start() {
-        cardPool = FetCardPool();
+    private void Start()
+    {
         UpdatePowerText();
     }
 
-    //For fetch all card power
-    public int GetPower()
-    {
-        int tempPower = 0;
-        Card[] temp = transform.GetComponentsInChildren<Card>();
-        for (int i = 0; i < temp.Length; i++)
-        {
-                tempPower += temp[i].cardSO.cardDamage;
-        }
-        return tempPower;
-    }
-
-    //When you drop card to field
     public virtual void OnDrop(PointerEventData eventData)
     {
-        if (eventData.pointerDrag.GetComponent<Card>().currentValue <= GameManager.Instance.playerSupply)
+        Card droppedCard = eventData.pointerDrag.GetComponent<Card>();
+        if (droppedCard != null && droppedCard.currentValue <= GameManager.Instance.playerSupply && GameManager.Instance.currentPlayerSupply > 0)
         {
-            eventData.pointerDrag.GetComponent<Card>().oldPosition = this.transform.localPosition;
-            eventData.pointerDrag.gameObject.transform.localScale = new Vector2(1,1);
-            eventData.pointerDrag.GetComponent<Card>().transform.SetParent(this.transform);
-            GameManager.Instance.currentPlayerSupply -= eventData.pointerDrag.GetComponent<Card>().currentValue;
+            droppedCard.transform.SetParent(transform);
+            droppedCard.transform.DOMove(transform.position, 0.2f).OnComplete(()=> droppedCard.transform.DOScale(new Vector2(droppedCard.transform.localScale.x + 1,droppedCard.transform.localScale.y + 1),0.2f).OnComplete(()=> droppedCard.transform.DOScale(new Vector2(droppedCard.transform.localScale.x - 1,droppedCard.transform.localScale.y - 1),0.2f)));
+            GameManager.Instance.currentPlayerSupply -= droppedCard.currentValue;
             GameManager.Instance.UpdatePlayerSupply();
-            UpdatePowerText(); 
+            UpdatePowerText();
         }
-        
+        else{
+            GameObject notEnoughSupplyText = Instantiate(Resources.Load<GameObject>("Resources/NotEnoughSupplyText.prefab"),droppedCard.transform.position,Quaternion.identity);
+            Destroy(notEnoughSupplyText,1f);
+        }
     }
 
+    public int GetPower()
+    {
+        int totalPower = 0;
+        cardPool = GetComponentsInChildren<Card>();
+        if (cardPool != null)
+        {
+            foreach (var card in cardPool)
+            {
+                totalPower += card.cardSO.cardDamage;
+            }
+        }
+        Debug.Log(totalPower);
+        return totalPower;
+    }
+
+    public void UpdatePowerText()
+    {
+        Debug.Log("Text Update");
+        fieldPowerText.text = GetPower().ToString();
+    }
     //For Fetch when you card destroy
     public Card[] CardDestroyPool(ref Card[] _cardlist,int _power){
         List<Card> tempDestroyCardList = new List<Card>();
@@ -65,13 +64,8 @@ public class DropZone : MonoBehaviour,IDropHandler,IGetPower
         }
         return tempDestroyCardList.ToArray<Card>();
     }
-
-    //Fetch Card Pool
-    public Card[] FetCardPool(){
+     //Fetch Card Pool
+    public Card[] FetchCardPool(){
         return this.GetComponentsInChildren<Card>();
     }
-    public void UpdatePowerText(){
-        fieldPowerText.text = GetPower().ToString();
-    }
-
 }

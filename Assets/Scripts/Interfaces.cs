@@ -16,3 +16,9 @@ public interface ITakeDamage{
 public interface IActionOnTurn{
     public void TurnAction(ref Card[] cards);
 }
+public interface ICardEffect
+{
+    void ExecuteEffect(GameObject target);
+    void ExecuteEffect(GameObject target,GameObject target2);
+      // Kart oynandığında efektin çalışması
+}

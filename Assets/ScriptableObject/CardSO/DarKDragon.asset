@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cardName: Dark Dragon
   cardImage: {fileID: 1243843859191168878, guid: 650232f1b1e1f914b845eb2d19de2014, type: 3}
-  cardValue: 3
+  cardValue: 5
   cardDamage: 5
-  cardDefense: 5
-  cardRarity: 2
+  cardDefense: 3
+  cardRarity: 1

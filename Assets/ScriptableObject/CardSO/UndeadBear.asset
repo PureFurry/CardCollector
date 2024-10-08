@@ -14,8 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cardName: UndeadBear
   cardImage: {fileID: 4250143330696534617, guid: c02ca56d300ccab42a5ffa03877269ef, type: 3}
-  cardValue: 3
-  cardDamage: 1
-  cardHealth: 3
+  cardValue: 1
+  cardDamage: 2
+  cardDefense: 0
   cardRarity: 0
-  cardType: 4

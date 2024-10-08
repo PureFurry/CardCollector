@@ -11,6 +11,7 @@ public class CardSO : ScriptableObject
     public int cardDamage;
     public int cardDefense;
     public CardRarity cardRarity;
+    public ICardEffect cardEffect;
 }
 public enum CardRarity
 {

@@ -10,10 +10,10 @@ public class FieldWar : DropZone,ITakeDamage
     {
         if (fieldHealth > 0)
         {
-            if (this.GetComponentsInChildren<Card>().Length > 0)
+            if (this.GetComponentsInChildren<Card>() != null)
             {
                 // Array.Clear(cardPool,0,cardPool.Length);
-            cardPool = FetCardPool();
+            cardPool = FetchCardPool();
             foreach (Card item in cardPool)
             {
                 Debug.Log(item.cardSO.cardName);
@@ -21,16 +21,20 @@ public class FieldWar : DropZone,ITakeDamage
             Card[] destroyCard = CardDestroyPool(ref cardPool,_damage);
             Debug.Log(destroyCard);
             Destroy(destroyCard[UnityEngine.Random.Range(0,destroyCard.Length)].gameObject);
-            GetPower();
-            UpdatePowerText(); 
+            Debug.Log("Damage İçinde");
+            this.GetPower();
+            this.UpdatePowerText();
             }
             else this.fieldHealth -= _damage;
         }
         else if (this.fieldHealth <= 0)
         {
-            
+            this.enabled = false;
         }
         
+    }
+    private void Update() {
+        UpdatePowerText();
     }
     private void OnEnable() {
         SuscribeTurnAction();
@@ -47,27 +51,49 @@ public class FieldWar : DropZone,ITakeDamage
     void TurnAction()
     {
         try
+    {
+        Debug.Log("Turn Action started");
+        
+        // Vurma şansı hesaplanıyor
+        int hitChance = UnityEngine.Random.Range(1, 12);
+
+        // Vuruş hesaplaması yapılıyor
+        if (hitChance + GameManager.Instance.globalWeath > missChance)
         {
-            Debug.Log("Turn Action started");
-            int hitChance = UnityEngine.Random.Range(1,12);
-            if (hitChance + GameManager.Instance.globalWeath > missChance)
+            // Child kartların sayısını kontrol ediyoruz
+            Card[] rivalCards = rivalField.GetComponentsInChildren<Card>();
+            if (rivalCards.Length > 0)
             {
-                if (rivalField.GetComponentsInChildren<Card>() != null)
+                // FieldWar component'ini alıyoruz ve null olmadığından emin oluyoruz
+                FieldWar fieldWar = rivalField.GetComponent<FieldWar>();
+                if (fieldWar != null)
                 {
-                    rivalField.GetComponent<FieldWar>().TakeDamage(GetPower());
-                    Debug.Log("Action");
+                    fieldWar.TakeDamage(GetPower());
+                    Debug.Log("Action performed successfully");
+                    UpdatePowerText();
+                }
+                else
+                {
+                    Debug.LogWarning("FieldWar component not found on rivalField");
                 }
             }
             else
             {
-                Debug.Log("Missed");
+                this.fieldHealth -= GetPower();
+                Debug.Log("No cards found in rivalField");
             }
-            Debug.Log("Turn Action ended");
         }
-        catch (Exception ex)
+        else
         {
-            Debug.LogError($"Error in TurnAction: {ex.Message}");
+            Debug.Log("Missed the target");
         }
+        
+        Debug.Log("Turn Action ended");
+    }
+    catch (Exception ex)
+    {
+        Debug.LogError($"Error in TurnAction: {ex.Message}");
+    }
     }
 
 }
